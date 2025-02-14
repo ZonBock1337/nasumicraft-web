@@ -7,7 +7,7 @@
 
 body {
     background: linear-gradient(to right, lightgreen, turquoise);
-    height: 500vh; /* Reduziere die Höhe auf 500% der Bildschirmhöhe für weniger Scrollen */
+    height: 200vh; /* Reduziere die Höhe auf 500% der Bildschirmhöhe für weniger Scrollen */
     display: flex;
     flex-direction: column;
     align-items: center;
