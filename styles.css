@@ -7,7 +7,7 @@
 
 body {
     background: linear-gradient(to right, lightgreen, turquoise);
-    height: 1000vh; /* Setzt die Höhe auf 2000% der Bildschirmhöhe für extrem viel Platz zum Scrollen */
+    height: 500vh; /* Reduziere die Höhe auf 500% der Bildschirmhöhe für weniger Scrollen */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,14 +23,14 @@ h1 {
 .info-text {
     font-size: 30px;
     font-weight: bold;
-    margin-top: 300px;
+    margin-top: 100px; /* Weniger Abstand zwischen Titel und Text */
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
 }
 
 .image-container {
-    margin-top: 100px;
+    margin-top: 100px; /* Weniger Abstand nach dem Text */
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
@@ -42,7 +42,7 @@ h1 {
 .image-container img {
     width: 100%;
     height: auto;
-    object-fit: contain; /* Stellt sicher, dass das Bild vollständig sichtbar ist, ohne es zu schneiden */
+    object-fit: contain; /* Sorgt dafür, dass das Bild immer vollständig sichtbar bleibt */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
