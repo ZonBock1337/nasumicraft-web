@@ -34,14 +34,14 @@ h1 {
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
-    width: 80%; /* sorgt dafür, dass das Bild nicht zu groß wird */
-    max-width: 1000px; /* Maximale Breite für das Bild */
+    width: 90%; /* Container jetzt größer */
+    max-width: 1500px; /* Maximale Breite erhöht */
     overflow: hidden;
 }
 
 .image-container img {
-    width: 100%; /* Bild soll die Containerbreite ausfüllen */
-    height: auto; /* Höhe proportional zum Bild */
+    width: 100%; /* Bild füllt den Container aus */
+    height: auto; /* Höhe bleibt proportional */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
