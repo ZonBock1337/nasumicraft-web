@@ -7,17 +7,19 @@
 
 body {
     background: linear-gradient(to right, lightgreen, turquoise);
-    height: 150vh; /* Reduziert die Höhe auf 150% der Bildschirmhöhe */
+    height: 200vh; /* Wir setzen die Höhe des Body auf 200% der Bildschirmhöhe für mehr Platz zum Scrollen */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 10%;
 }
 
 h1 {
     font-size: 50px;
     font-weight: bold;
-    margin-top: 50px;
+    margin-top: 20px;
+    text-align: center;
 }
 
 .info-text {
@@ -27,24 +29,24 @@ h1 {
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
+    text-align: center;
 }
 
 .image-container {
-    margin-top: 100px;
+    margin-top: 100px; /* Setzen wir etwas Abstand */
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
-    width: 80%; /* Setzt die Breite des Bildcontainers */
-    max-width: 1200px; /* Beschränkt die maximale Breite des Containers */
-    height: auto;
+    width: 100%;
+    max-width: 1400px; /* Setzen wir eine maximale Breite */
     overflow: hidden;
 }
 
 .image-container img {
     width: 100%;
     height: auto;
-    max-height: 80vh; /* Maximalhöhe des Bildes auf 80% der Bildschirmhöhe beschränken */
-    object-fit: contain; /* Stellt sicher, dass das Bild vollständig sichtbar ist, ohne abgeschnitten zu werden */
+    max-height: 80vh; /* Wir begrenzen die Höhe des Bildes auf 80% des Viewports */
+    object-fit: contain; /* Das Bild wird skaliert, aber bleibt in voller Ansicht */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
