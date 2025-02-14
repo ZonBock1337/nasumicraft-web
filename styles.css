@@ -7,7 +7,7 @@
 
 body {
     background: linear-gradient(to right, lightgreen, turquoise);
-    height: 2000vh; /* Setzt die Höhe auf 2000% der Bildschirmhöhe für extrem viel Platz zum Scrollen */
+    height: 1000vh; /* Setzt die Höhe auf 2000% der Bildschirmhöhe für extrem viel Platz zum Scrollen */
     display: flex;
     flex-direction: column;
     align-items: center;
