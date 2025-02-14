@@ -7,7 +7,7 @@
 
 body {
     background: linear-gradient(to right, lightgreen, turquoise);
-    height: 800vh; /* Längere Seite zum Scrollen */
+    height: 400vh; /* Seite länger machen, sodass mehr Platz zum Scrollen vorhanden ist */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,16 +34,26 @@ h1 {
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
-    width: 90%; /* Container jetzt größer */
-    max-width: 1500px; /* Maximale Breite erhöht */
+    width: 90%;
+    max-width: 1500px;
     overflow: hidden;
 }
 
 .image-container img {
-    width: 100%; /* Bild füllt den Container aus */
-    height: auto; /* Höhe bleibt proportional */
+    width: 100%;
+    height: auto;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.extra-content {
+    opacity: 0;
+    transform: translateY(50px);
+    margin-top: 100px;
+    font-size: 20px;
+    text-align: center;
+    color: #333;
+    transition: all 1s ease-out;
 }
 
 .visible {
