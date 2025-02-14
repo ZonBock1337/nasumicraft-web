@@ -7,7 +7,7 @@
 
 body {
     background: linear-gradient(to right, lightgreen, turquoise);
-    height: 200vh; /* Wir setzen die Höhe des Body auf 200% der Bildschirmhöhe für mehr Platz zum Scrollen */
+    height: 200vh; /* Höhe des Scrollbereichs für mehr Platz */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,22 +33,16 @@ h1 {
 }
 
 .image-container {
-    margin-top: 100px; /* Setzen wir etwas Abstand */
+    margin-top: 100px;
+    width: 100%;
+    height: 60vh; /* Maximale Höhe des Containers */
+    background-image: url('https://github.com/ZonBock1337/nasumicraft-wiki/blob/8b5993bb90cedb320288e7a99e944ea4114181c4/library/nasumicraft-inductions.png?raw=true');
+    background-size: contain; /* Bild anpassen, ohne es abzuschneiden */
+    background-repeat: no-repeat;
+    background-position: center center; /* Bild zentrieren */
     opacity: 0;
     transform: translateY(50px);
     transition: all 1s ease-out;
-    width: 100%;
-    max-width: 1400px; /* Setzen wir eine maximale Breite */
-    overflow: hidden;
-}
-
-.image-container img {
-    width: 100%;
-    height: auto;
-    max-height: 80vh; /* Wir begrenzen die Höhe des Bildes auf 80% des Viewports */
-    object-fit: contain; /* Das Bild wird skaliert, aber bleibt in voller Ansicht */
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .visible {
