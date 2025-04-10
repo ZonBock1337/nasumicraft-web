@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NasumiCraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #ff6600;
+      --bg-dark: #121212;
+      --bg-light: #1f1f1f;
+      --text-light: #f5f5f5;
+      --text-muted: #999;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* Parallax Header */
+    header {
+      background-image: url('pageimages/background.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      height: 350px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+
+    header h1 {
+      font-size: 54px;
+      color: var(--main-color);
+      z-index: 1;
+    }
+
+    .mods-button {
+      margin-top: 20px;
+      background-color: var(--main-color);
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      z-index: 1;
+    }
+
+    .mods-button:hover {
+      background-color: #e05500;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      margin-bottom: 60px;
+    }
+
+    .description {
+      font-size: 20px;
+      color: #ccc;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background-color: var(--bg-light);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .feature-card h3 {
+      color: var(--main-color);
+      margin-top: 0;
+    }
+
+    .gallery {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+    }
+
+    .gallery img {
+      height: 150px;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+
+    .team {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .member {
+      background-color: var(--bg-light);
+      padding: 20px;
+      border-radius: 12px;
+      width: 220px;
+      text-align: center;
+    }
+
+    .member img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border: 2px solid var(--main-color);
+    }
+
+    .button {
+      background-color: var(--main-color);
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      display: inline-block;
+      margin: 20px auto 0;
+    }
+
+    .button:hover {
+      background-color: #e05500;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 60px 0 20px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>NasumiCraft</h1>
+    <a class="mods-button" href="mods.html">📦 Mods</a>
+  </header>
+
+  <main>
+    <section class="description">
+      <p>
+        Willkommen bei <strong>NasumiCraft</strong> – deinem Minecraft-Projekt für Abenteuer, Technik, Magie & Community!<br>
+        Entdecke ein maßgeschneidertes Modpack, freundliche Spieler und neue Features rund um Vanilla & Modded.
+      </p>
+      <a class="button" href="https://discord.gg/deinlink" target="_blank">Jetzt Discord beitreten</a>
+    </section>
+
+    <section>
+      <h2>✨ Features</h2>
+      <div class="features">
+        <div class="feature-card">
+          <h3>🌍 Eigener Server</h3>
+          <p>Spiele auf unserem stabilen Community-Server – 24/7 online mit aktiver Moderation und Events.</p>
+        </div>
+        <div class="feature-card">
+          <h3>⚙️ Modpack</h3>
+          <p>Technik, Magie, Farming, QoL – alles abgestimmt für Spaß & Performance.</p>
+        </div>
+        <div class="feature-card">
+          <h3>👥 Aktive Community</h3>
+          <p>Freundliche Spieler, Events, Support & Teamwork über Discord und Ingame.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🎨 Custom Content</h3>
+          <p>Eigenentwickelte Mods & exklusive Plugins für ein frisches Erlebnis.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>📸 Screenshots</h2>
+      <div class="gallery">
+        <img src="https://i.imgur.com/kLZ2bLw.jpeg" alt="Screenshot 1">
+        <img src="https://i.imgur.com/7t2S77G.jpeg" alt="Screenshot 2">
+        <img src="https://i.imgur.com/Q3uV5Er.jpeg" alt="Screenshot 3">
+      </div>
+    </section>
+
+    <section>
+      <h2>👑 Unser Team</h2>
+      <div class="team">
+        <div class="member">
+          <img src="https://i.imgur.com/l60Hf.png" alt="Admin">
+          <h4>ZonBock</h4>
+          <p>Projektleitung, Technik & Mods</p>
+        </div>
+        <div class="member">
+          <img src="https://i.imgur.com/l60Hf.png" alt="Mod">
+          <h4>Alex</h4>
+          <p>Community, Moderation</p>
+        </div>
+        <div class="member">
+          <img src="https://i.imgur.com/l60Hf.png" alt="Builder">
+          <h4>Sora</h4>
+          <p>Design, Builds & Weltgestaltung</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 NasumiCraft | <a href="impressum.html" style="color: #777;">Impressum</a>
+  </footer>
+
+</body>
+</html>
