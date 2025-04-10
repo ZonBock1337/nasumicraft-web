@@ -85,35 +85,44 @@
   </footer>
 
   <script>
-    const username = "DEIN_GITHUB_USERNAME"; // <- hier einfügen
-    const repo = "DEIN_REPO_NAME"; // <- hier einfügen
-    const modsFolder = "ModsPages";
+    const githubApiUrl = "https://api.github.com/repos/ZonBock1337/nasumicraft-web/contents/modspages?ref=page";
 
     async function fetchMods() {
-      const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/${modsFolder}`;
       try {
-        const res = await fetch(apiUrl);
+        const res = await fetch(githubApiUrl);
         const files = await res.json();
+        const htmlFiles = files.filter(file => file.name.endsWith(".html"));
+
         const modList = document.getElementById("modList");
         const modCount = document.getElementById("modCount");
 
         modList.innerHTML = "";
-        modCount.innerText = `Verfügbare Mods (${files.length}) in der Library`;
+        modCount.innerText = `Verfügbare Mods (${htmlFiles.length}) in der Library`;
 
-        // Nur 3 Mods anzeigen (als Beispiel)
-        for (let i = 0; i < Math.min(3, files.length); i++) {
-          const file = files[i];
-          const modTitle = decodeURIComponent(file.name.replace(/\.[^/.]+$/, ""));
+        for (let i = 0; i < htmlFiles.length; i++) {
+          const file = htmlFiles[i];
+          const rawUrl = `https://raw.githubusercontent.com/ZonBock1337/nasumicraft-web/page/modspages/${file.name}`;
+          
+          // Lade HTML der Mod-Datei
+          const modRes = await fetch(rawUrl);
+          const modHtml = await modRes.text();
 
+          // Hole den <title>
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(modHtml, "text/html");
+          const title = doc.querySelector("title")?.textContent || file.name;
+
+          // Mod-Karte erstellen
           const card = document.createElement("div");
           card.className = "mod-card";
           card.innerHTML = `
-            <strong>${modTitle}</strong>
+            <strong>${title}</strong>
             <small>Datei: ${file.name}</small>
-            <small><a href="${file.html_url}" target="_blank">Zur Mod-Seite</a></small>
+            <small><a href="${rawUrl}" target="_blank">Mod-Seite öffnen</a></small>
           `;
           modList.appendChild(card);
         }
+
       } catch (error) {
         console.error("Fehler beim Laden der Mods:", error);
         document.getElementById("modList").innerHTML = "<p>Fehler beim Laden der Mods.</p>";
