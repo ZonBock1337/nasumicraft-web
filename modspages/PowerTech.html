@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PowerTech</title>
 
-  <!-- Meta Infos für Home-Seite -->
+  <!-- Meta Daten -->
   <meta name="mod-name" content="PowerTech">
   <meta name="mod-version" content="1.0.2">
   <meta name="description" content="PowerTech bringt fortschrittliche Technologien, Maschinen und Energieerzeugung in NasumiCraft.">
@@ -22,17 +22,58 @@
       color: #f0f0f0;
     }
 
-    .topbar {
-      background-color: #121212;
-      padding: 20px;
+    .header {
+      background-image: url('https://raw.githubusercontent.com/ZonBock1337/nasumicraft-web/refs/heads/page/pageimages/background.png');
+      background-size: cover;
+      background-position: center;
+      height: 300px;
+      position: relative;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff6600;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .content-box {
+      background-color: #2a2a2a;
+      margin: -100px auto 40px;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 1000px;
+      display: flex;
+      gap: 30px;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .mod-image {
+      width: 150px;
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+
+    .mod-info {
+      flex: 1;
+    }
+
+    .mod-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 3px solid #ff6600;
     }
 
     .mod-title {
-      font-size: 32px;
+      font-size: 30px;
       color: #ff6600;
       margin: 0;
     }
@@ -40,7 +81,7 @@
     .download-button {
       background-color: #ff6600;
       color: white;
-      padding: 12px 22px;
+      padding: 10px 18px;
       text-decoration: none;
       font-weight: bold;
       border-radius: 5px;
@@ -53,60 +94,25 @@
       background-color: #e05500;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 20px;
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-    }
-
-    .mod-image {
-      flex: 0 0 150px;
-      height: 150px;
-      background-size: cover;
-      background-position: center;
-      border-radius: 10px;
-      border: 1px solid #333;
-    }
-
-    .mod-info {
-      flex: 1;
-    }
-
     .mod-description {
       font-size: 16px;
-      line-height: 1.6;
       color: #ddd;
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
 
     .license {
       font-size: 13px;
       color: #888;
-      margin-top: 40px;
+      margin-top: 30px;
+      text-align: left;
     }
 
-    .back-button {
-      position: absolute;
-      top: 22px;
-      left: 20px;
-      background-color: #ff6600;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 5px;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    /* Download Modal */
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
+      z-index: 999;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       background-color: rgba(0,0,0,0.6);
@@ -117,15 +123,15 @@
     .modal-content {
       background-color: #2a2a2a;
       padding: 30px;
-      border-radius: 8px;
-      width: 300px;
-      box-shadow: 0 0 15px #000;
+      border-radius: 10px;
+      width: 320px;
       text-align: center;
+      box-shadow: 0 0 10px #000;
       position: relative;
     }
 
     .modal-content h2 {
-      margin-top: 0;
+      margin: 0 0 10px;
       color: #ff6600;
     }
 
@@ -135,8 +141,8 @@
     }
 
     .modal-content a {
-      margin-top: 20px;
       display: inline-block;
+      margin-top: 20px;
       background-color: #ff6600;
       color: white;
       padding: 10px 20px;
@@ -154,10 +160,26 @@
       cursor: pointer;
     }
 
+    .version-select {
+      background-color: #2a2a2a;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 20px;
+      border: 1px solid #333;
+      width: 100%;
+    }
+
     @media (max-width: 768px) {
-      .topbar {
+      .content-box {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
+      }
+
+      .mod-header {
+        flex-direction: column;
         gap: 10px;
       }
     }
@@ -165,29 +187,35 @@
 </head>
 <body>
 
-  <a class="back-button" href="../home.html">Zurück</a>
-
-  <div class="topbar">
-    <h1 class="mod-title" id="modTitle">PowerTech</h1>
-    <button class="download-button" id="openDownload">Download</button>
+  <div class="header">
+    <a class="back-button" href="../home.html">Zurück</a>
   </div>
 
-  <div class="container">
+  <div class="content-box">
     <div class="mod-image" id="modImage"></div>
     <div class="mod-info">
+      <div class="mod-header">
+        <h1 class="mod-title" id="modTitle">Modname</h1>
+        <button class="download-button" id="openDownload">Download</button>
+      </div>
       <div class="mod-description" id="modDescription"></div>
       <div class="license" id="licenseText">Lizenz: MIT</div>
+
+      <!-- Version Auswahl -->
+      <select class="version-select" id="versionSelect">
+        <option value="">Version auswählen</option>
+      </select>
     </div>
   </div>
 
-  <!-- Download Modal -->
+  <!-- Modal für Download -->
   <div class="modal" id="downloadModal">
     <div class="modal-content">
       <span class="close-modal" id="closeModal">&times;</span>
       <h2>Download</h2>
       <p id="modalVersion">Version: 1.20.1</p>
       <p id="modalLoader">Mod Loader: Forge</p>
-      <a id="downloadLink" href="#" download>Herunterladen</a>
+      <a id="downloadLink" href="#" download>Jetzt herunterladen</a>
     </div>
   </div>
 
@@ -205,18 +233,45 @@
     document.getElementById("licenseText").textContent = "Lizenz: " + license;
     document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
 
-    // Download Setup
-    const fileName = `${name.toLowerCase()}-${mcVersion}-${loader.toLowerCase()}.jar`;
-    const downloadUrl = `../mods/${fileName}`;
+    // Versionen laden
+    const versionSelect = document.getElementById("versionSelect");
 
-    document.getElementById("modalVersion").textContent = `Version: ${mcVersion}`;
-    document.getElementById("modalLoader").textContent = `Mod Loader: ${loader}`;
-    document.getElementById("downloadLink").href = downloadUrl;
+    // Hier könnte ein Server-Request notwendig sein, um die Versionen dynamisch zu bekommen
+    const versions = ["1.20.1", "1.19.4", "1.18.2"]; // Beispielhafte Versionen, diese müssen vom Server kommen
 
-    document.getElementById("openDownload").addEventListener("click", () => {
-      document.getElementById("downloadModal").style.display = "flex";
+    versions.forEach((version) => {
+      const option = document.createElement("option");
+      option.value = version;
+      option.textContent = `Version ${version}`;
+      versionSelect.appendChild(option);
     });
 
+    // Download Setup basierend auf der Version
+    const downloadUrl = (version) => {
+      const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.jar`;
+      return `../mods/${name.toLowerCase()}/${fileName}`;
+    };
+
+    // Version auswählen und Download Modal aktualisieren
+    versionSelect.addEventListener("change", (e) => {
+      const selectedVersion = e.target.value;
+
+      if (selectedVersion) {
+        document.getElementById("modalVersion").textContent = `Version: ${selectedVersion}`;
+        document.getElementById("modalLoader").textContent = `Mod Loader: ${loader}`;
+        document.getElementById("downloadLink").href = downloadUrl(selectedVersion);
+      }
+    });
+
+    // Modal öffnen
+    document.getElementById("openDownload").addEventListener("click", () => {
+      const selectedVersion = versionSelect.value;
+      if (selectedVersion) {
+        document.getElementById("downloadModal").style.display = "flex";
+      }
+    });
+
+    // Modal schließen
     document.getElementById("closeModal").addEventListener("click", () => {
       document.getElementById("downloadModal").style.display = "none";
     });
