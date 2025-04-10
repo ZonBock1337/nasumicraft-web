@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PowerTech</title>
+
+  <!-- Mod Infos (werden vom Home geladen!) -->
   <meta name="mod-name" content="PowerTech">
-  <meta name="mod-version" content="1.0.0">
-  <meta name="description" content="PowerTech ist ein High-Tech-Modul für NasumiCraft mit Energieerzeugung und Maschinen.">
+  <meta name="mod-version" content="1.0.2">
+  <meta name="description" content="PowerTech bringt fortschrittliche Technologien, Maschinen und Energieerzeugung in NasumiCraft.">
   <meta name="license" content="MIT">
-  <meta name="mod-image" content="../pageimages/powertech.png"> <!-- 400x400 -->
+  <meta name="mod-image" content="../pageimages/powertech.png">
 
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4faff;
-      color: #222;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1a1a1a;
+      color: #f0f0f0;
     }
 
     .header-image {
@@ -36,73 +38,83 @@
       top: 20px;
       left: 20px;
       padding: 10px 20px;
-      background-color: #0055aa;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      z-index: 10;
-    }
-
-    .content {
-      max-width: 1000px;
-      margin: auto;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: row;
-      gap: 30px;
-      align-items: flex-start;
-    }
-
-    .mod-image {
-      width: 400px;
-      height: 400px;
-      background-color: #ddd;
-      background-size: cover;
-      background-position: center;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-
-    .mod-info {
-      flex: 1;
-    }
-
-    .mod-title {
-      font-size: 36px;
-      color: #003366;
-      margin-top: 0;
-    }
-
-    .mod-description {
-      font-size: 16px;
-      margin-top: 15px;
-      line-height: 1.6;
-    }
-
-    .download-button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 24px;
-      background-color: #007bff;
+      background-color: #ff6600;
       color: white;
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
+      z-index: 10;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .mod-image {
+      flex: 0 0 400px;
+      height: 400px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+    }
+
+    .mod-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mod-title {
+      font-size: 36px;
+      color: #ff6600;
+      margin: 0;
+    }
+
+    .mod-version {
+      font-size: 18px;
+      color: #aaa;
+      margin-top: 5px;
+    }
+
+    .mod-description {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-top: 20px;
+      color: #ddd;
+    }
+
+    .download-button {
+      margin-top: 40px;
+      background-color: #ff6600;
+      color: white;
+      padding: 14px 28px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 5px;
       transition: background-color 0.3s;
+      align-self: flex-start;
     }
 
     .download-button:hover {
-      background-color: #005dc1;
+      background-color: #e05500;
     }
 
     .license {
-      font-size: 13px;
-      color: #666;
-      margin: 40px 0 0 40px;
+      margin-top: 60px;
+      font-size: 14px;
+      color: #888;
+      text-align: left;
     }
 
-    @media (max-width: 768px) {
-      .content {
+    @media (max-width: 900px) {
+      .container {
         flex-direction: column;
         align-items: center;
       }
@@ -113,9 +125,18 @@
         height: auto;
       }
 
-      .license {
-        margin-left: 0;
+      .mod-info {
+        align-items: center;
         text-align: center;
+      }
+
+      .download-button {
+        align-self: center;
+      }
+
+      .license {
+        text-align: center;
+        margin-left: 0;
       }
     }
   </style>
@@ -123,46 +144,53 @@
 <body>
 
   <div class="header-image" id="headerImage">
-    <a class="back-button" href="../index.html">Zurück</a>
+    <a class="back-button" href="../home.html">Zurück</a>
   </div>
 
-  <div class="content">
+  <div class="container">
     <div class="mod-image" id="modImage"></div>
 
     <div class="mod-info">
-      <h1 class="mod-title" id="modTitle">Mod Name</h1>
-      <div class="mod-description" id="modDescription">Beschreibung wird geladen...</div>
-      <a class="download-button" id="downloadButton" href="#">Download</a>
+      <div>
+        <h1 class="mod-title" id="modTitle">Modname</h1>
+        <div class="mod-version" id="modVersion">Version</div>
+        <div class="mod-description" id="modDescription">Beschreibung</div>
+      </div>
+
+      <a class="download-button" id="downloadBtn" href="#">Download (.jar)</a>
     </div>
   </div>
 
-  <div class="license" id="licenseText">Lizenz: </div>
+  <div class="license" id="licenseText">Lizenz: MIT</div>
 
   <script>
-    const modName = document.querySelector('meta[name="mod-name"]')?.content || "Unbenannt";
-    const version = document.querySelector('meta[name="mod-version"]')?.content || "0.0.0";
-    const description = document.querySelector('meta[name="description"]')?.content || "Keine Beschreibung verfügbar.";
-    const license = document.querySelector('meta[name="license"]')?.content || "Unbekannt";
-    const image = document.querySelector('meta[name="mod-image"]')?.content || "../pageimages/defaultmod.png";
+    const name = document.querySelector('meta[name="mod-name"]').content;
+    const version = document.querySelector('meta[name="mod-version"]').content;
+    const desc = document.querySelector('meta[name="description"]').content;
+    const license = document.querySelector('meta[name="license"]').content;
+    const image = document.querySelector('meta[name="mod-image"]').content;
 
-    document.getElementById("modTitle").textContent = `${modName} v${version}`;
-    document.getElementById("modDescription").textContent = description;
-    document.getElementById("licenseText").textContent = `Lizenz: ${license}`;
+    document.getElementById("modTitle").textContent = name;
+    document.getElementById("modVersion").textContent = "Version " + version;
+    document.getElementById("modDescription").textContent = desc;
+    document.getElementById("licenseText").textContent = "Lizenz: " + license;
     document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
-    document.getElementById("downloadButton").href = `../mods/${modName}.zip`;
 
-    // Scroll-Verhalten
-    let lastScrollTop = 0;
+    // JAR Download-Link (z.B. /mods/PowerTech.jar)
+    document.getElementById("downloadBtn").href = `../mods/${name}.jar`;
+
+    // Header scroll animation
+    let lastScroll = 0;
     window.addEventListener("scroll", () => {
       const header = document.getElementById("headerImage");
       const st = window.pageYOffset || document.documentElement.scrollTop;
-      if (st > lastScrollTop) {
+      if (st > lastScroll) {
         header.classList.add("hidden-header");
       } else {
         header.classList.remove("hidden-header");
       }
-      lastScrollTop = st <= 0 ? 0 : st;
-    }, false);
+      lastScroll = st <= 0 ? 0 : st;
+    });
   </script>
 
 </body>
