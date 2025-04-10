@@ -138,7 +138,7 @@
         modCount.textContent = `Verfügbare Mods (${htmlFiles.length}) in der Library`;
 
         for (const file of htmlFiles) {
-          const rawUrl = `https://raw.githubusercontent.com/ZonBock1337/nasumicraft-web/page/modspages/${file.name}`;
+          const rawUrl = `https://mc.nasumicraft.de/modspages/${file.name}`;
           const publicUrl = modPageUrlBase + file.name;
           const filename = file.name.replace(".html", "");
 
