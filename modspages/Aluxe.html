@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aluxe</title>
+
+  <!-- Meta Daten -->
+  <meta name="mod-name" content="Aluxe">
+  <meta name="mod-version" content="1.0.2">
+  <meta name="description" content="PowerTech bringt fortschrittliche Technologien, Maschinen und Energieerzeugung in NasumiCraft. \n\nDie Mod ist gerade nicht in Entwicklung">
+  <meta name="license" content="MIT">
+  <meta name="mod-image" content="../pageimages/aluxe.gif">
+  <meta name="minecraft-version" content="1.20.1">
+  <meta name="mod-loader" content="Forge">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      position: relative;
+    }
+
+    .header {
+      background-image: url('https://raw.githubusercontent.com/ZonBock1337/nasumicraft-web/refs/heads/page/pageimages/background.png');
+      background-size: cover;
+      background-position: center;
+      height: 300px;
+      position: relative;
+      z-index: -1;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff6600;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .content-box {
+      background-color: #2a2a2a;
+      margin: -100px auto 40px;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 1000px;
+      display: flex;
+      gap: 30px;
+      box-shadow: 0 0 20px #000;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mod-image {
+      width: 150px;
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+
+    .mod-info {
+      flex: 1;
+    }
+
+    .mod-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mod-title {
+      font-size: 30px;
+      color: #ff6600;
+      margin: 0;
+    }
+
+    .download-button {
+      background-color: #ff6600;
+      color: white;
+      padding: 10px 18px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .download-button:hover {
+      background-color: #e05500;
+    }
+
+    .mod-description {
+      font-size: 16px;
+      color: #ddd;
+      margin-top: 20px;
+    }
+
+    .license {
+      font-size: 13px;
+      color: #888;
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #2a2a2a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 0 10px #000;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin: 0 0 10px;
+      color: #ff6600;
+    }
+
+    .modal-content p {
+      margin: 10px 0;
+      color: #ccc;
+    }
+
+    .modal-content a {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #ff6600;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #aaa;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .version-select {
+      background-color: #2a2a2a;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 20px;
+      border: 1px solid #333;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .content-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .mod-header {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back-button" href="../index.html">Zurück</a>
+</div>
+
+  <div class="content-box">
+    <div class="mod-image" id="modImage"></div>
+    <div class="mod-info">
+      <div class="mod-header">
+        <h1 class="mod-title" id="modTitle">Modname</h1>
+        <button class="download-button" id="openDownload">Download</button>
+      </div>
+      <div class="mod-description" id="modDescription"></div>
+      <div class="license" id="licenseText">Lizenz: MIT</div>
+
+      <!-- Version Auswahl -->
+      <select class="version-select" id="versionSelect">
+        <option value="">Version auswählen</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Modal für Download -->
+  <div class="modal" id="downloadModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h2>Download</h2>
+      <p id="modalVersion">Version: 1.20.1</p>
+      <p id="modalLoader">Mod Loader: Forge</p>
+      <a id="downloadLink" href="#" download>Jetzt herunterladen</a>
+    </div>
+  </div>
+
+  <script>
+    const name = document.querySelector('meta[name="mod-name"]').content;
+    const version = document.querySelector('meta[name="mod-version"]').content;
+    const mcVersion = document.querySelector('meta[name="minecraft-version"]').content;
+    const loader = document.querySelector('meta[name="mod-loader"]').content;
+    const desc = document.querySelector('meta[name="description"]').content;
+    const license = document.querySelector('meta[name="license"]').content;
+    const image = document.querySelector('meta[name="mod-image"]').content;
+
+    document.getElementById("modTitle").textContent = name;
+    document.getElementById("modDescription").textContent = desc;
+    document.getElementById("licenseText").textContent = "Lizenz: " + license;
+    document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
+
+    // Versionen laden
+    const versionSelect = document.getElementById("versionSelect");
+
+    // Hier könnte ein Server-Request notwendig sein, um die Versionen dynamisch zu bekommen
+    const versions = ["1.20.1"]; // Beispielhafte Versionen, diese müssen vom Server kommen
+
+    versions.forEach((version) => {
+      const option = document.createElement("option");
+      option.value = version;
+      option.textContent = `Version ${version}`;
+      versionSelect.appendChild(option);
+    });
+
+    // Download Setup basierend auf der Version
+    const downloadUrl = (version) => {
+      const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.jar`;
+      return `../mods/${name.toLowerCase()}/${fileName}`;
+    };
+
+    // Version auswählen und Download Modal aktualisieren
+    versionSelect.addEventListener("change", (e) => {
+      const selectedVersion = e.target.value;
+
+      if (selectedVersion) {
+        document.getElementById("modalVersion").textContent = `Version: ${selectedVersion}`;
+        document.getElementById("modalLoader").textContent = `Mod Loader: ${loader}`;
+        document.getElementById("downloadLink").href = downloadUrl(selectedVersion);
+      }
+    });
+
+    // Modal öffnen
+    document.getElementById("openDownload").addEventListener("click", () => {
+      const selectedVersion = versionSelect.value;
+      if (selectedVersion) {
+        document.getElementById("downloadModal").style.display = "flex";
+      }
+    });
+
+    // Modal schließen
+    document.getElementById("closeModal").addEventListener("click", () => {
+      document.getElementById("downloadModal").style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target == document.getElementById("downloadModal")) {
+        document.getElementById("downloadModal").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
