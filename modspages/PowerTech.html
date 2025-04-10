@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PowerTech</title>
+  <meta name="mod-version" content="1.0.0">
+  <meta name="description" content="PowerTech ist ein High-Tech-Modul für NasumiCraft mit Energieerzeugung und Maschinen.">
+  <meta name="license" content="MIT">
+  <meta name="mod-name" content="PowerTech">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4faff;
+      color: #222;
+    }
+
+    .header-image {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      background-image: url('https://raw.githubusercontent.com/ZonBock1337/nasumicraft-web/refs/heads/page/pageimages/background.png');
+      background-size: cover;
+      background-position: center;
+      transition: height 0.3s ease;
+      z-index: 1;
+    }
+
+    .hidden-header {
+      height: 80px !important;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #0055aa;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 10;
+      text-decoration: none;
+    }
+
+    .content {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+      text-align: left;
+    }
+
+    .mod-title {
+      font-size: 36px;
+      color: #003366;
+      margin-bottom: 20px;
+    }
+
+    .mod-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    .mod-image {
+      width: 400px;
+      height: 400px;
+      background-color: #ddd;
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+    }
+
+    .mod-info {
+      flex: 1;
+      margin-left: 30px;
+    }
+
+    .mod-description {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .download-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .download-button:hover {
+      background-color: #005dc1;
+    }
+
+    .license {
+      font-size: 13px;
+      color: #666;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .mod-box {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .mod-info {
+        margin-left: 0;
+        margin-top: 20px;
+      }
+
+      .mod-image {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-image" id="headerImage">
+    <a class="back-button" href="../index.html">Zurück</a>
+  </div>
+
+  <div class="content">
+    <div class="mod-title" id="modTitle">Mod Name</div>
+
+    <div class="mod-box">
+      <div class="mod-image" id="modImage" style="background-image: url('../pageimages/defaultmod.png');"></div>
+
+      <div class="mod-info">
+        <div class="mod-title" id="modTitleBottom">Mod Name</div>
+        <div class="mod-description" id="modDescription">
+          Beschreibung wird geladen...
+        </div>
+
+        <a class="download-button" id="downloadButton" href="#">Download</a>
+        <div class="license" id="licenseText">Lizenz: </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hole Meta-Infos aus <meta>
+    const modName = document.querySelector('meta[name="mod-name"]')?.content || "Unbenannt";
+    const version = document.querySelector('meta[name="mod-version"]')?.content || "0.0.0";
+    const description = document.querySelector('meta[name="description"]')?.content || "Keine Beschreibung verfügbar.";
+    const license = document.querySelector('meta[name="license"]')?.content || "Unbekannt";
+
+    // Setze Inhalte
+    document.getElementById("modTitle").textContent = modName;
+    document.getElementById("modTitleBottom").textContent = `${modName} v${version}`;
+    document.getElementById("modDescription").textContent = description;
+    document.getElementById("licenseText").textContent = `Lizenz: ${license}`;
+    document.getElementById("downloadButton").href = `../mods/${modName}.zip`; // Oder eigene URL setzen
+
+    // Scroll-Verhalten für Header-Image
+    let lastScrollTop = 0;
+    window.addEventListener("scroll", () => {
+      const header = document.getElementById("headerImage");
+      const st = window.pageYOffset || document.documentElement.scrollTop;
+      if (st > lastScrollTop) {
+        // Scrollt nach unten
+        header.classList.add("hidden-header");
+      } else {
+        // Scrollt nach oben
+        header.classList.remove("hidden-header");
+      }
+      lastScrollTop = st <= 0 ? 0 : st;
+    }, false);
+  </script>
+</body>
+</html>
