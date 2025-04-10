@@ -217,13 +217,18 @@
     <div class="modal-content">
       <span class="close-modal" id="closeModal">&times;</span>
       <h2>Download</h2>
-      <p id="modalVersion">Version: 1.20.1</p>
-      <p id="modalLoader">Mod Loader: Forge</p>
+      <p id="modalVersion">Version: </p>
+      <label for="loaderSelect" style="color: #ccc; margin-top: 10px;">Mod Loader wählen:</label>
+      <select id="loaderSelect" class="version-select" style="margin-top: 10px;">
+        <option value="">Bitte wählen</option>
+        <option value="Forge">Forge</option>
+        <option value="Fabric">Fabric</option>
+      </select>
       <a id="downloadLink" href="#" download>Jetzt herunterladen</a>
     </div>
   </div>
 
-  <script>
+<script>
   const name = document.querySelector('meta[name="mod-name"]').content;
   const modVersion = document.querySelector('meta[name="mod-version"]').content;
   const desc = document.querySelector('meta[name="description"]').content;
@@ -236,45 +241,27 @@
   document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
 
   const versionSelect = document.getElementById("versionSelect");
+  const loaderSelect = document.getElementById("loaderSelect");
+  const modalVersion = document.getElementById("modalVersion");
+  const downloadLink = document.getElementById("downloadLink");
 
-  // Beispielhafte Versionen
-  const versions = ["1.20.1 Forge", "1.20.1 Fabric"];
+  const versions = ["1.20.1", "1.19.4", "1.18.2"];
 
-  versions.forEach((version) => {
+  // Versionen in Dropdown laden
+  versions.forEach((ver) => {
     const option = document.createElement("option");
-    option.value = version;
-    option.textContent = `Version ${version}`;
+    option.value = ver;
+    option.textContent = `Version ${ver}`;
     versionSelect.appendChild(option);
-  });
-
-  // Funktion zum Extrahieren des Loaders aus der Version
-  function getLoaderFromVersion(version) {
-    if (version.toLowerCase().includes("fabric")) return "Fabric";
-    if (version.toLowerCase().includes("forge")) return "Forge";
-    return "Unbekannt";
-  }
-
-  function getDownloadUrl(version, loader) {
-    const mcVersionOnly = version.split(" ")[0];
-    const fileName = `${name.toLowerCase()}-${mcVersionOnly}-${loader.toLowerCase()}.jar`;
-    return `../mods/${name.toLowerCase()}/${fileName}`;
-  }
-
-  versionSelect.addEventListener("change", (e) => {
-    const selectedVersion = e.target.value;
-    const loader = getLoaderFromVersion(selectedVersion);
-
-    if (selectedVersion) {
-      document.getElementById("modalVersion").textContent = `Version: ${selectedVersion}`;
-      document.getElementById("modalLoader").textContent = `Mod Loader: ${loader}`;
-      document.getElementById("downloadLink").href = getDownloadUrl(selectedVersion, loader);
-    }
   });
 
   // Modal öffnen
   document.getElementById("openDownload").addEventListener("click", () => {
     const selectedVersion = versionSelect.value;
     if (selectedVersion) {
+      modalVersion.textContent = `Version: ${selectedVersion}`;
+      loaderSelect.value = "";
+      downloadLink.style.display = "none";
       document.getElementById("downloadModal").style.display = "flex";
     }
   });
@@ -287,6 +274,21 @@
   window.addEventListener("click", (e) => {
     if (e.target == document.getElementById("downloadModal")) {
       document.getElementById("downloadModal").style.display = "none";
+    }
+  });
+
+  // Loader auswählen → Download-Link generieren
+  loaderSelect.addEventListener("change", () => {
+    const version = versionSelect.value;
+    const loader = loaderSelect.value;
+
+    if (version && loader) {
+      const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.jar`;
+      const href = `../mods/${name.toLowerCase()}/${fileName}`;
+      downloadLink.href = href;
+      downloadLink.style.display = "inline-block";
+    } else {
+      downloadLink.style.display = "none";
     }
   });
 </script>
