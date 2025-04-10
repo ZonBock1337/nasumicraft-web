@@ -9,13 +9,14 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f2f2f2;
+      background: linear-gradient(to bottom, #e6f0ff, #ffffff);
+      color: #333;
       text-align: center;
     }
 
     header {
-      background-color: #222;
-      color: white;
+      background-color: #cce0ff;
+      color: #003366;
       padding: 60px 20px;
     }
 
@@ -26,7 +27,7 @@
 
     h2 {
       margin-top: 10px;
-      color: #ccc;
+      color: #0055aa;
     }
 
     section {
@@ -43,18 +44,38 @@
 
     .mod-card {
       background: white;
+      border: 2px solid #cce0ff;
       border-radius: 8px;
       padding: 15px;
       width: 250px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       text-align: left;
       font-size: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .mod-card:hover {
+      transform: scale(1.03);
+    }
+
+    .mod-card strong {
+      font-size: 16px;
+      color: #003366;
     }
 
     .mod-card small {
       display: block;
-      color: gray;
+      color: #666;
       margin-top: 5px;
+    }
+
+    a {
+      color: #0055aa;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
 
     footer {
@@ -86,6 +107,7 @@
 
   <script>
     const githubApiUrl = "https://api.github.com/repos/ZonBock1337/nasumicraft-web/contents/modspages?ref=page";
+    const publicUrlBase = "https://zonbock1337.github.io/nasumicraft-web/modspages/";
 
     async function fetchMods() {
       try {
@@ -99,30 +121,27 @@
         modList.innerHTML = "";
         modCount.innerText = `Verfügbare Mods (${htmlFiles.length}) in der Library`;
 
-        for (let i = 0; i < htmlFiles.length; i++) {
-          const file = htmlFiles[i];
+        for (const file of htmlFiles) {
           const rawUrl = `https://raw.githubusercontent.com/ZonBock1337/nasumicraft-web/page/modspages/${file.name}`;
-          
-          // Lade HTML der Mod-Datei
+          const publicUrl = publicUrlBase + file.name;
+
           const modRes = await fetch(rawUrl);
           const modHtml = await modRes.text();
 
-          // Hole den <title>
           const parser = new DOMParser();
           const doc = parser.parseFromString(modHtml, "text/html");
-          const title = doc.querySelector("title")?.textContent || file.name;
+          const title = doc.querySelector("title")?.textContent || file.name.replace(".html", "");
+          const version = doc.querySelector('meta[name="mod-version"]')?.getAttribute("content") || "unbekannt";
 
-          // Mod-Karte erstellen
           const card = document.createElement("div");
           card.className = "mod-card";
           card.innerHTML = `
             <strong>${title}</strong>
-            <small>Datei: ${file.name}</small>
-            <small><a href="${rawUrl}" target="_blank">Mod-Seite öffnen</a></small>
+            <small>Version: ${version}</small>
+            <small><a href="${publicUrl}" target="_blank">Mod-Seite öffnen</a></small>
           `;
           modList.appendChild(card);
         }
-
       } catch (error) {
         console.error("Fehler beim Laden der Mods:", error);
         document.getElementById("modList").innerHTML = "<p>Fehler beim Laden der Mods.</p>";
