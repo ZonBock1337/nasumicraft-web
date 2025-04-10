@@ -31,6 +31,24 @@
       color: #ccc;
     }
 
+    .back-button {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      padding: 10px 20px;
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #e05500;
+    }
+
     .mod-library {
       max-width: 1200px;
       margin: 0 auto;
@@ -107,6 +125,8 @@
 <body>
 
   <header>
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.history.back();">⬅ Zurück</button>
     <h1>NasumiCraft Mods</h1>
     <h2>Mods von NasumiCraft</h2>
   </header>
@@ -146,6 +166,8 @@
           const htmlText = await modRes.text();
 
           const doc = new DOMParser().parseFromString(htmlText, "text/html");
+          
+          // Sicherstellen, dass die Meta-Tags existieren
           const title = doc.querySelector("meta[name='mod-name']")?.content || filename;
           const version = doc.querySelector("meta[name='mod-version']")?.content || "Unbekannt";
           const image = doc.querySelector("meta[name='mod-image']")?.content || "https://via.placeholder.com/400x400?text=Mod";
