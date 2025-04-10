@@ -224,67 +224,71 @@
   </div>
 
   <script>
-    const name = document.querySelector('meta[name="mod-name"]').content;
-    const version = document.querySelector('meta[name="mod-version"]').content;
-    const mcVersion = document.querySelector('meta[name="minecraft-version"]').content;
-    const loader = document.querySelector('meta[name="mod-loader"]').content;
-    const desc = document.querySelector('meta[name="description"]').content;
-    const license = document.querySelector('meta[name="license"]').content;
-    const image = document.querySelector('meta[name="mod-image"]').content;
+  const name = document.querySelector('meta[name="mod-name"]').content;
+  const modVersion = document.querySelector('meta[name="mod-version"]').content;
+  const desc = document.querySelector('meta[name="description"]').content;
+  const license = document.querySelector('meta[name="license"]').content;
+  const image = document.querySelector('meta[name="mod-image"]').content;
 
-    document.getElementById("modTitle").textContent = name;
-    document.getElementById("modDescription").textContent = desc;
-    document.getElementById("licenseText").textContent = "Lizenz: " + license;
-    document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
+  document.getElementById("modTitle").textContent = name;
+  document.getElementById("modDescription").textContent = desc;
+  document.getElementById("licenseText").textContent = "Lizenz: " + license;
+  document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
 
-    // Versionen laden
-    const versionSelect = document.getElementById("versionSelect");
+  const versionSelect = document.getElementById("versionSelect");
 
-    // Hier könnte ein Server-Request notwendig sein, um die Versionen dynamisch zu bekommen
-    const versions = ["1.20.1 Forge", "1.20.1 Fabric"]; // Beispielhafte Versionen, diese müssen vom Server kommen
+  // Beispielhafte Versionen
+  const versions = ["1.20.1 Forge", "1.20.1 Fabric"];
 
-    versions.forEach((version) => {
-      const option = document.createElement("option");
-      option.value = version;
-      option.textContent = `Version ${version}`;
-      versionSelect.appendChild(option);
-    });
+  versions.forEach((version) => {
+    const option = document.createElement("option");
+    option.value = version;
+    option.textContent = `Version ${version}`;
+    versionSelect.appendChild(option);
+  });
 
-    // Download Setup basierend auf der Version
-    const downloadUrl = (version) => {
-      const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.jar`;
-      return `../mods/${name.toLowerCase()}/${fileName}`;
-    };
+  // Funktion zum Extrahieren des Loaders aus der Version
+  function getLoaderFromVersion(version) {
+    if (version.toLowerCase().includes("fabric")) return "Fabric";
+    if (version.toLowerCase().includes("forge")) return "Forge";
+    return "Unbekannt";
+  }
 
-    // Version auswählen und Download Modal aktualisieren
-    versionSelect.addEventListener("change", (e) => {
-      const selectedVersion = e.target.value;
+  function getDownloadUrl(version, loader) {
+    const mcVersionOnly = version.split(" ")[0];
+    const fileName = `${name.toLowerCase()}-${mcVersionOnly}-${loader.toLowerCase()}.jar`;
+    return `../mods/${name.toLowerCase()}/${fileName}`;
+  }
 
-      if (selectedVersion) {
-        document.getElementById("modalVersion").textContent = `Version: ${selectedVersion}`;
-        document.getElementById("modalLoader").textContent = `Mod Loader: ${loader}`;
-        document.getElementById("downloadLink").href = downloadUrl(selectedVersion);
-      }
-    });
+  versionSelect.addEventListener("change", (e) => {
+    const selectedVersion = e.target.value;
+    const loader = getLoaderFromVersion(selectedVersion);
 
-    // Modal öffnen
-    document.getElementById("openDownload").addEventListener("click", () => {
-      const selectedVersion = versionSelect.value;
-      if (selectedVersion) {
-        document.getElementById("downloadModal").style.display = "flex";
-      }
-    });
+    if (selectedVersion) {
+      document.getElementById("modalVersion").textContent = `Version: ${selectedVersion}`;
+      document.getElementById("modalLoader").textContent = `Mod Loader: ${loader}`;
+      document.getElementById("downloadLink").href = getDownloadUrl(selectedVersion, loader);
+    }
+  });
 
-    // Modal schließen
-    document.getElementById("closeModal").addEventListener("click", () => {
+  // Modal öffnen
+  document.getElementById("openDownload").addEventListener("click", () => {
+    const selectedVersion = versionSelect.value;
+    if (selectedVersion) {
+      document.getElementById("downloadModal").style.display = "flex";
+    }
+  });
+
+  // Modal schließen
+  document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("downloadModal").style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target == document.getElementById("downloadModal")) {
       document.getElementById("downloadModal").style.display = "none";
-    });
-
-    window.addEventListener("click", (e) => {
-      if (e.target == document.getElementById("downloadModal")) {
-        document.getElementById("downloadModal").style.display = "none";
-      }
-    });
-  </script>
+    }
+  });
+</script>
 </body>
 </html>
