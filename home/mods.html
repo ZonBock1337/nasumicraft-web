@@ -138,8 +138,8 @@
     </div>
   </main>
 
-  <footer></footer>
-    &copy; 2025 NasumiCraft. Made with Craft.
+  <footer>
+    &copy; 2025 NasumiCraft. Made with Craft. | Die Mod Seite wird automatisch betrieben.
   </footer>
 
   <script>
@@ -155,7 +155,7 @@
         const modList = document.getElementById("modList");
         const modCount = document.getElementById("modCount");
         modList.innerHTML = "";
-        modCount.textContent = `Verfügbare Mods (${htmlFiles.length}) in der Library`;
+        modCount.textContent = `Verfügbare Mods (${htmlFiles.length}) in der Lib`;
 
         for (const file of htmlFiles) {
           const rawUrl = `https://mc.nasumicraft.de/modspages/${file.name}`;
