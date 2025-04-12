@@ -121,28 +121,47 @@
       margin: 50px 0 20px;
     }
     
-    .search-bar {
+        .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
       margin-top: 20px;
-      padding: 10px;
+    }
+
+    .search-bar {
+     padding: 10px;
       width: 80%;
      max-width: 400px;
      font-size: 16px;
      border: 1px solid #555;
      border-radius: 5px;
      background-color: #2a2a2a;
-      color: #f0f0f0;
+     color: #f0f0f0;
     }
+
+    .category-select {
+     padding: 10px;
+     font-size: 16px;
+     border: 1px solid #555;
+     border-radius: 5px;
+      background-color: #2a2a2a;
+     color: #f0f0f0;
+     max-width: 200px;
+    }
+
 
   </style>
 </head>
 <body>
 
   <header>
-    <!-- Back Button -->
-    <button class="back-button" onclick="window.history.back();">⬅ Zurück</button>
-    <h1>NasumiCraft Mods</h1>
-    <h2>Mods von NasumiCraft</h2>
-    
+      
+        <h1>NasumiCraft Mods</h1>
+  <h2 id="categoryTitle">Mods von NasumiCraft</h2>
+      
+  <!-- Header Container with Searchbar and Category Dropdown -->
+  <div class="header-container">
     <input
       type="text"
       class="search-bar"
@@ -150,14 +169,32 @@
       placeholder="Mods durchsuchen..."
       oninput="filterMods()"
     />
+    <select class="category-select" id="categorySelect" onchange="loadMods();">
+      <option value="mod">Mods</option>
+      <option value="modpack">Modpacks</option>
+    </select>
+  </div>
+ 
+</header>
 
-  </header>
 
   <main class="mod-library">
-    <div class="mod-count" id="modCount">Lade Mods...</div>
-    <div class="mod-list" id="modList">
-      <p style="color:#888;">Mods werden geladen...</p>
-    </div>
+    <div id="modSection">
+  <h3 id="modSectionTitle">Mods</h3>
+  <div class="mod-count" id="modCount">Lade Mods...</div>
+  <div class="mod-list" id="modList">
+    <p style="color:#888;">Mods werden geladen...</p>
+  </div>
+</div>
+
+<div id="modpackSection" style="display:none;">
+  <h3 id="modpackSectionTitle">Modpacks</h3>
+  <div class="mod-count" id="modpackCount">Lade Modpacks...</div>
+  <div class="mod-list" id="modpackList">
+    <p style="color:#888;">Modpacks werden geladen...</p>
+  </div>
+</div>
+
   </main>
 
   <footer>
@@ -168,52 +205,100 @@
     const githubApiUrl = "https://api.github.com/repos/ZonBock1337/nasumicraft-web/contents/modspages?ref=page";
     const modPageUrlBase = "https://mc.nasumicraft.de/modspages/";
 
+    const modSection = document.getElementById("modSection");
+const modpackSection = document.getElementById("modpackSection");
+const modList = document.getElementById("modList");
+const modpackList = document.getElementById("modpackList");
+const categoryTitle = document.getElementById("categoryTitle");
+const modCount = document.getElementById("modCount");
+const modpackCount = document.getElementById("modpackCount");
+
     async function loadMods() {
       try {
+        const category = document.getElementById("categorySelect").value; // Wert aus dem Dropdown
         const res = await fetch(githubApiUrl);
         const files = await res.json();
         const htmlFiles = files.filter(file => file.name.endsWith(".html"));
-
-        const modList = document.getElementById("modList");
-        const modCount = document.getElementById("modCount");
-        modList.innerHTML = "";
-        modCount.textContent = `Verfügbare Mods (${htmlFiles.length}) in der Lib`;
-
+    
+        const mods = [];
+        const modpacks = [];
+    
         for (const file of htmlFiles) {
           const rawUrl = `https://mc.nasumicraft.de/modspages/${file.name}`;
           const publicUrl = modPageUrlBase + file.name;
           const filename = file.name.replace(".html", "");
-
+    
           const modRes = await fetch(rawUrl);
           const htmlText = await modRes.text();
-
           const doc = new DOMParser().parseFromString(htmlText, "text/html");
-          
+    
           // Sicherstellen, dass die Meta-Tags existieren
           const title = doc.querySelector("meta[name='mod-name']")?.content || filename;
           const version = doc.querySelector("meta[name='mod-version']")?.content || "Unbekannt";
           const image = doc.querySelector("meta[name='mod-image']")?.content || "https://via.placeholder.com/400x400?text=Mod";
-
-          const card = document.createElement("div");
-          card.className = "mod-card";
-          card.innerHTML = `
-            <div class="mod-image" style="background-image: url('${image}')"></div>
-            <div class="mod-content">
-              <div class="mod-title">${title}</div>
-              <div class="mod-version">Version: ${version}</div>
-              <a class="mod-link" href="${publicUrl}" target="_blank">Mod-Seite öffnen</a>
-            </div>
-          `;
-          modList.appendChild(card);
+          const category = doc.querySelector("meta[name='category']")?.content || "mod"; // Standardwert: mod
+    
+          const card = {
+            title,
+            version,
+            image,
+            publicUrl
+          };
+    
+          if (category === "modpack") {
+            modpacks.push(card);
+          } else {
+            mods.push(card);
+          }
+        }
+    
+        // Filtern und Anzeigen je nach Auswahl
+        if (category === "mod") {
+          modSection.style.display = "block";
+          modpackSection.style.display = "none";
+          categoryTitle.textContent = "Mods";
+          modList.innerHTML = "";
+          modCount.textContent = `Verfügbare Mods (${mods.length})`;
+    
+          mods.forEach(mod => {
+            const cardElement = createModCard(mod);
+            modList.appendChild(cardElement);
+          });
+        } else {
+          modSection.style.display = "none";
+          modpackSection.style.display = "block";
+          categoryTitle.textContent = "Modpacks";
+          modpackList.innerHTML = "";
+          modpackCount.textContent = `Verfügbare Modpacks (${modpacks.length})`;
+    
+          modpacks.forEach(modpack => {
+            const cardElement = createModCard(modpack);
+            modpackList.appendChild(cardElement);
+          });
         }
       } catch (err) {
         console.error("Fehler beim Laden der Mods:", err);
-        document.getElementById("modList").innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Mod-Liste.</p>";
+        modList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
+        modpackList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
       }
     }
-
-    loadMods();
     
+    function createModCard(mod) {
+      const card = document.createElement("div");
+      card.className = "mod-card";
+      card.innerHTML = `
+        <div class="mod-image" style="background-image: url('${mod.image}')"></div>
+        <div class="mod-content">
+          <div class="mod-title">${mod.title}</div>
+          <div class="mod-version">Version: ${mod.version}</div>
+          <a class="mod-link" href="${mod.publicUrl}" target="_blank">Mod-Seite öffnen</a>
+        </div>
+      `;
+      return card;
+    }
+    
+    loadMods(); // Initialer Aufruf beim Laden der Seite
+
     function filterMods() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const modCards = document.querySelectorAll(".mod-card");
