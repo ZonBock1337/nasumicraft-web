@@ -284,7 +284,7 @@
 
     if (version && loader) {
       const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.zip`;
-      const href = `../modpacks/${fileName}/${name.toLowerCase()}/${fileName}`;
+      const href = `../modpacks/${name.toLowerCase()}/${fileName}`;
       downloadLink.href = href;
       downloadLink.style.display = "inline-block";
     } else {
