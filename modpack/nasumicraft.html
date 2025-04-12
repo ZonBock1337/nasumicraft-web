@@ -10,7 +10,7 @@
   <meta name="mod-version" content="1.0.4">
   <meta name="description" content="Aluxe ist ein Client der dir ermöglicht in dunkelheit zu sehen, Schwierigkeits grad zu tracken wie auch die Welt Zeit!  [Beachte das Aluxe kein hack Client ist!]">
   <meta name="license" content="Unavaiable for Modpacks">
-  <meta name="mod-image" content="https://github.com/ZonBock1337/nasumicraft-web/blob/page/pageimages/aluxe.gif?raw=true">
+  <meta name="mod-image" content="https://media.forgecdn.net/avatars/thumbnails/1120/349/64/64/638675091756433650.png">
   <meta name="minecraft-version" content="1.20.1">
   <meta name="mod-loader" content="Forge">
   <meta name="category" content="modpack" />
@@ -224,7 +224,7 @@
         <option value="">Bitte wählen</option>
         <option value="Forge">Forge</option>
       </select>
-      <a id="downloadLink" href="#" download>Jetzt herunterladen</a>
+      <a id="downloadLink" href="#" download>Download .zip</a>
     </div>
   </div>
 
@@ -245,7 +245,7 @@
   const modalVersion = document.getElementById("modalVersion");
   const downloadLink = document.getElementById("downloadLink");
 
-  const versions = ["1.20.1"];
+  const versions = ["1.20.1 + .zip", "1.19.2 + .zip"];
 
   // Versionen in Dropdown laden
   versions.forEach((ver) => {
@@ -283,7 +283,7 @@
     const loader = loaderSelect.value;
 
     if (version && loader) {
-      const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.jar`;
+      const fileName = `${name.toLowerCase()}-${version}-${loader.toLowerCase()}.zip`;
       const href = `../modpacks/${name.toLowerCase()}/${fileName}`;
       downloadLink.href = href;
       downloadLink.style.display = "inline-block";
