@@ -252,6 +252,8 @@ async function loadMods() {
       const title = doc.querySelector("meta[name='mod-name']")?.content || filename;
       const version = doc.querySelector("meta[name='mod-version']")?.content || "Unbekannt";
       const image = doc.querySelector("meta[name='mod-image']")?.content || "https://via.placeholder.com/400x400?text=Mod";
+      const categoryMeta = doc.querySelector("meta[name='category']")?.content?.toLowerCase() || "mod";
+      if (categoryMeta === "private") continue;
 
       const card = {
         title,
