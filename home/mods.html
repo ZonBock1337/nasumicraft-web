@@ -203,102 +203,137 @@
 
   <script>
     const githubApiUrl = "https://api.github.com/repos/ZonBock1337/nasumicraft-web/contents/modspages?ref=page";
-    const modPageUrlBase = "https://mc.nasumicraft.de/modspages/";
 
     const modSection = document.getElementById("modSection");
-const modpackSection = document.getElementById("modpackSection");
-const modList = document.getElementById("modList");
-const modpackList = document.getElementById("modpackList");
-const categoryTitle = document.getElementById("categoryTitle");
-const modCount = document.getElementById("modCount");
-const modpackCount = document.getElementById("modpackCount");
+    const modpackSection = document.getElementById("modpackSection");
+    const modList = document.getElementById("modList");
+    const modpackList = document.getElementById("modpackList");
+    const categoryTitle = document.getElementById("categoryTitle");
+    const modCount = document.getElementById("modCount");
+    const modpackCount = document.getElementById("modpackCount");
 
     async function loadMods() {
-      try {
-        const category = document.getElementById("categorySelect").value; // Wert aus dem Dropdown
-        const res = await fetch(githubApiUrl);
-        const files = await res.json();
-        const htmlFiles = files.filter(file => file.name.endsWith(".html"));
-    
-        const mods = [];
-        const modpacks = [];
-    
-        for (const file of htmlFiles) {
-          const rawUrl = `https://mc.nasumicraft.de/modspages/${file.name}`;
-          const publicUrl = modPageUrlBase + file.name;
-          const filename = file.name.replace(".html", "");
-    
-          const modRes = await fetch(rawUrl);
-          const htmlText = await modRes.text();
-          const doc = new DOMParser().parseFromString(htmlText, "text/html");
-    
-          // Sicherstellen, dass die Meta-Tags existieren
-          const title = doc.querySelector("meta[name='mod-name']")?.content || filename;
-          const version = doc.querySelector("meta[name='mod-version']")?.content || "Unbekannt";
-          const image = doc.querySelector("meta[name='mod-image']")?.content || "https://via.placeholder.com/400x400?text=Mod";
-          const category = doc.querySelector("meta[name='category']")?.content || "mod"; // Standardwert: mod
-    
-          const card = {
-            title,
-            version,
-            image,
-            publicUrl
-          };
-    
-          if (category === "modpack") {
-            modpacks.push(card);
-          } else {
-            mods.push(card);
-          }
-        }
-    
-        // Filtern und Anzeigen je nach Auswahl
-        if (category === "mod") {
-          modSection.style.display = "block";
-          modpackSection.style.display = "none";
-          categoryTitle.textContent = "Mods";
-          modList.innerHTML = "";
-          modCount.textContent = `Verfügbare Mods (${mods.length})`;
-    
-          mods.forEach(mod => {
-            const cardElement = createModCard(mod);
-            modList.appendChild(cardElement);
-          });
-        } else {
-          modSection.style.display = "none";
-          modpackSection.style.display = "block";
-          categoryTitle.textContent = "Modpacks";
-          modpackList.innerHTML = "";
-          modpackCount.textContent = `Verfügbare Modpacks (${modpacks.length})`;
-    
-          modpacks.forEach(modpack => {
-            const cardElement = createModCard(modpack);
-            modpackList.appendChild(cardElement);
-          });
-        }
-      } catch (err) {
-        console.error("Fehler beim Laden der Mods:", err);
-        modList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
-        modpackList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
+  try {
+    const category = document.getElementById("categorySelect").value; // Wert aus dem Dropdown
+    console.log('Kategorie ausgewählt:', category); // Debugging: Zeigt die ausgewählte Kategorie an.
+
+    const res = await fetch(githubApiUrl);
+    const files = await res.json();
+    console.log('Geladene Dateien von GitHub:', files); // Debugging: Zeigt die geladenen Dateien an.
+
+    const htmlFiles = files.filter(file => file.name.endsWith(".html"));
+    console.log('HTML-Dateien gefiltert:', htmlFiles); // Debugging: Zeigt die gefilterten HTML-Dateien an.
+
+    const mods = [];
+    const modpacks = [];
+
+    for (const file of htmlFiles) {
+      const baseUrl = category === "modpack" ? "https://mc.nasumicraft.de/modpack/" : "https://mc.nasumicraft.de/mod/";
+
+      // Neue URL, basierend auf der Kategorie
+      const rawUrl = `${baseUrl}${file.name}`; 
+      const publicUrl = rawUrl;
+
+      console.log('Lade Datei von URL:', rawUrl); // Debugging: Zeigt die URL der aktuellen Datei an.
+
+      const filename = file.name.replace(".html", "");
+
+      const modRes = await fetch(rawUrl);
+      const htmlText = await modRes.text();
+      const doc = new DOMParser().parseFromString(htmlText, "text/html");
+
+      // Sicherstellen, dass die Meta-Tags existieren
+      const title = doc.querySelector("meta[name='mod-name']")?.content || filename;
+      const version = doc.querySelector("meta[name='mod-version']")?.content || "Unbekannt";
+      const image = doc.querySelector("meta[name='mod-image']")?.content || "https://via.placeholder.com/400x400?text=Mod";
+      const categoryMeta = doc.querySelector("meta[name='category']")?.content || "mod"; // Standardwert: mod
+
+      console.log(`Mod-Name: ${title}, Version: ${version}, Kategorie: ${categoryMeta}`); // Debugging: Zeigt die Metadaten an.
+
+      const card = {
+        title,
+        version,
+        image,
+        publicUrl
+      };
+
+      if (categoryMeta === "modpack") {
+        modpacks.push(card);
+      } else {
+        mods.push(card);
       }
     }
-    
+
+    // Filtern und Anzeigen je nach Auswahl
+    if (category === "mod") {
+      console.log('Mods anzeigen:', mods); // Debugging: Zeigt die Mods an
+      modSection.style.display = "block";
+      modpackSection.style.display = "none";
+      categoryTitle.textContent = "Mods";
+      modList.innerHTML = "";
+      modCount.textContent = `Verfügbare Mods (${mods.length})`;
+
+      mods.forEach(mod => {
+        const cardElement = createModCard(mod);
+        modList.appendChild(cardElement);
+      });
+    } else {
+      console.log('Modpacks anzeigen:', modpacks); // Debugging: Zeigt die Modpacks an
+      modSection.style.display = "none";
+      modpackSection.style.display = "block";
+      categoryTitle.textContent = "Modpacks";
+      modpackList.innerHTML = "";
+      modpackCount.textContent = `Verfügbare Modpacks (${modpacks.length})`;
+
+      modpacks.forEach(modpack => {
+        const cardElement = createModCard(modpack);
+        modpackList.appendChild(cardElement);
+      });
+    }
+  } catch (err) {
+    console.error("Fehler beim Laden der Mods:", err);
+    modList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
+    modpackList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
+  }
+}
+
     function createModCard(mod) {
+      // Erstelle das Mod-Karten-Element
       const card = document.createElement("div");
       card.className = "mod-card";
-      card.innerHTML = `
-        <div class="mod-image" style="background-image: url('${mod.image}')"></div>
-        <div class="mod-content">
-          <div class="mod-title">${mod.title}</div>
-          <div class="mod-version">Version: ${mod.version}</div>
-          <a class="mod-link" href="${mod.publicUrl}" target="_blank">Mod-Seite öffnen</a>
-        </div>
-      `;
-      return card;
+    
+      // Füge das Bild hinzu
+      const modImage = document.createElement("div");
+      modImage.className = "mod-image";
+      modImage.style.backgroundImage = `url('${mod.image}')`;
+      card.appendChild(modImage);
+    
+      // Füge den Inhalt der Karte hinzu
+      const modContent = document.createElement("div");
+      modContent.className = "mod-content";
+    
+      const modTitle = document.createElement("div");
+      modTitle.className = "mod-title";
+      modTitle.textContent = mod.title;
+      modContent.appendChild(modTitle);
+    
+      const modVersion = document.createElement("div");
+      modVersion.className = "mod-version";
+      modVersion.textContent = `Version: ${mod.version}`;
+      modContent.appendChild(modVersion);
+    
+      const modLink = document.createElement("a");
+      modLink.className = "mod-link";
+      modLink.href = mod.publicUrl;
+      modLink.target = "_blank";
+      modLink.textContent = "Mod-Seite öffnen";
+      modContent.appendChild(modLink);
+    
+      card.appendChild(modContent);
+    
+      return card; // Gibt die erstellte Karte zurück
     }
     
-    loadMods(); // Initialer Aufruf beim Laden der Seite
-
     function filterMods() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const modCards = document.querySelectorAll(".mod-card");
