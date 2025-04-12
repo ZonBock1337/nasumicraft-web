@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>NasumiCraft Serverstatus</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+  <style>
+    body {
+      background: url('https://mc.nasumicraft.de/pageimages/background.png') repeat;
+      color: #ffffff;
+      font-family: 'Minecraft', sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    .status-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px solid #55ff55;
+      border-radius: 10px;
+      display: inline-block;
+      padding: 30px;
+      box-shadow: 0 0 10px #00ff00;
+      max-width: 600px;
+    }
+
+    h1 {
+      color: #55ff55;
+      text-shadow: 2px 2px #000;
+    }
+
+    .label {
+      color: #aaaaaa;
+    }
+
+    .value {
+      color: #ffffff;
+    }
+
+    .online {
+      color: #55ff55;
+    }
+
+    .offline {
+      color: #ff5555;
+    }
+
+    .motd {
+      margin-top: 30px;
+      border-top: 1px solid #55ff55;
+      padding-top: 15px;
+      color: #ffffaa;
+      font-size: 18px;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+  <div class="status-box">
+    <h1>🌍 NasumiCraft Serverstatus</h1>
+    <p><span class="label">Server IP:</span> <span class="value">play.nasumicraft.de</span></p>
+    <p><span class="label">Status:</span> <span id="status">Lade...</span></p>
+    <p><span class="label">Version:</span> <span id="version">-</span></p>
+    <p><span class="label">Spieler:</span> <span id="players">-</span></p>
+
+    <div class="motd" id="motd">MOTD wird geladen...</div>
+  </div>
+
+  <script>
+    async function fetchServerStatus() {
+      const response = await fetch('https://api.mcsrvstat.us/2/play.nasumicraft.de');
+      const data = await response.json();
+
+      const statusEl = document.getElementById('status');
+      const motdEl = document.getElementById('motd');
+      const versionEl = document.getElementById('version');
+      const playersEl = document.getElementById('players');
+
+      if (data.online) {
+        statusEl.textContent = "Online";
+        statusEl.className = "online";
+        versionEl.textContent = data.version || "-";
+        playersEl.textContent = `${data.players.online} / ${data.players.max}`;
+
+        const motdLines = data.motd?.clean || ["-"];
+        motdEl.innerHTML = motdLines.map(line => `<div>${line}</div>`).join('');
+      } else {
+        statusEl.textContent = "Offline";
+        statusEl.className = "offline";
+        versionEl.textContent = "-";
+        playersEl.textContent = "-";
+        motdEl.textContent = "-";
+      }
+    }
+
+    fetchServerStatus();
+  </script>
+</body>
+</html>
