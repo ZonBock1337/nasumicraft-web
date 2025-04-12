@@ -16,13 +16,13 @@
       background-color: #121212;
       padding: 60px 20px 20px;
       text-align: center;
-      border-bottom: 3px solid #ff6600;
     }
 
     h1 {
       font-size: 48px;
       color: #ff6600;
       margin: 0;
+      border-bottom: 3px solid #ff6600;
     }
 
     h2 {
@@ -120,6 +120,19 @@
       font-size: 13px;
       margin: 50px 0 20px;
     }
+    
+    .search-bar {
+      margin-top: 20px;
+      padding: 10px;
+      width: 80%;
+     max-width: 400px;
+     font-size: 16px;
+     border: 1px solid #555;
+     border-radius: 5px;
+     background-color: #2a2a2a;
+      color: #f0f0f0;
+    }
+
   </style>
 </head>
 <body>
@@ -129,6 +142,15 @@
     <button class="back-button" onclick="window.history.back();">⬅ Zurück</button>
     <h1>NasumiCraft Mods</h1>
     <h2>Mods von NasumiCraft</h2>
+    
+    <input
+      type="text"
+      class="search-bar"
+      id="searchInput"
+      placeholder="Mods durchsuchen..."
+      oninput="filterMods()"
+    />
+
   </header>
 
   <main class="mod-library">
@@ -191,6 +213,17 @@
     }
 
     loadMods();
+    
+    function filterMods() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const modCards = document.querySelectorAll(".mod-card");
+
+      modCards.forEach(card => {
+       const title = card.querySelector(".mod-title").textContent.toLowerCase();
+       card.style.display = title.includes(input) ? "block" : "none";
+     });
+    }
+
   </script>
 </body>
 </html>
