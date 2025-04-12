@@ -202,7 +202,6 @@
   </footer>
 
   <script>
-    const githubApiUrl = "https://api.github.com/repos/ZonBock1337/nasumicraft-web/contents/modspages?ref=page";
 
     const modSection = document.getElementById("modSection");
     const modpackSection = document.getElementById("modpackSection");
@@ -212,43 +211,47 @@
     const modCount = document.getElementById("modCount");
     const modpackCount = document.getElementById("modpackCount");
 
-    async function loadMods() {
+    const githubApiUrlBase = "https://api.github.com/repos/ZonBock1337/nasumicraft-web/contents/";
+const branch = "page"; // Branch für die GitHub-API (z.B. 'main')
+
+// Funktion zum Laden von Mods oder Modpacks
+async function loadMods() {
   try {
-    const category = document.getElementById("categorySelect").value; // Wert aus dem Dropdown
-    console.log('Kategorie ausgewählt:', category); // Debugging: Zeigt die ausgewählte Kategorie an.
+    // Ausgewählte Kategorie (Mod oder Modpack)
+    const category = document.getElementById("categorySelect").value;
+    console.log('Kategorie ausgewählt:', category);
+
+    // URL je nach Kategorie anpassen
+    const githubApiUrl = `${githubApiUrlBase}${category}?ref=${branch}`;
+    console.log('Abruf URL:', githubApiUrl); // Debugging: Zeigt die URL, die abgerufen wird.
 
     const res = await fetch(githubApiUrl);
     const files = await res.json();
-    console.log('Geladene Dateien von GitHub:', files); // Debugging: Zeigt die geladenen Dateien an.
+    console.log('Geladene Dateien von GitHub:', files); // Debugging
 
     const htmlFiles = files.filter(file => file.name.endsWith(".html"));
-    console.log('HTML-Dateien gefiltert:', htmlFiles); // Debugging: Zeigt die gefilterten HTML-Dateien an.
+    console.log('Gefilterte HTML-Dateien:', htmlFiles);
 
     const mods = [];
     const modpacks = [];
 
+    // Verarbeite die Dateien
     for (const file of htmlFiles) {
       const baseUrl = category === "modpack" ? "https://mc.nasumicraft.de/modpack/" : "https://mc.nasumicraft.de/mod/";
 
-      // Neue URL, basierend auf der Kategorie
-      const rawUrl = `${baseUrl}${file.name}`; 
+      const rawUrl = `${baseUrl}${file.name}`;
       const publicUrl = rawUrl;
 
-      console.log('Lade Datei von URL:', rawUrl); // Debugging: Zeigt die URL der aktuellen Datei an.
+      console.log('Lade Datei von URL:', rawUrl);
 
       const filename = file.name.replace(".html", "");
-
       const modRes = await fetch(rawUrl);
       const htmlText = await modRes.text();
       const doc = new DOMParser().parseFromString(htmlText, "text/html");
 
-      // Sicherstellen, dass die Meta-Tags existieren
       const title = doc.querySelector("meta[name='mod-name']")?.content || filename;
       const version = doc.querySelector("meta[name='mod-version']")?.content || "Unbekannt";
       const image = doc.querySelector("meta[name='mod-image']")?.content || "https://via.placeholder.com/400x400?text=Mod";
-      const categoryMeta = doc.querySelector("meta[name='category']")?.content || "mod"; // Standardwert: mod
-
-      console.log(`Mod-Name: ${title}, Version: ${version}, Kategorie: ${categoryMeta}`); // Debugging: Zeigt die Metadaten an.
 
       const card = {
         title,
@@ -257,45 +260,45 @@
         publicUrl
       };
 
-      if (categoryMeta === "modpack") {
+      // Mods oder Modpacks basierend auf der Kategorie einfügen
+      if (category === "modpack") {
         modpacks.push(card);
       } else {
         mods.push(card);
       }
     }
 
-    // Filtern und Anzeigen je nach Auswahl
+    // Anzeige je nach Kategorie
     if (category === "mod") {
-      console.log('Mods anzeigen:', mods); // Debugging: Zeigt die Mods an
-      modSection.style.display = "block";
-      modpackSection.style.display = "none";
-      categoryTitle.textContent = "Mods";
-      modList.innerHTML = "";
-      modCount.textContent = `Verfügbare Mods (${mods.length})`;
+      document.getElementById("modSection").style.display = "block";
+      document.getElementById("modpackSection").style.display = "none";
+      document.getElementById("categoryTitle").textContent = "Mods";
+      document.getElementById("modList").innerHTML = "";
+      document.getElementById("modCount").textContent = `Verfügbare Mods (${mods.length})`;
 
       mods.forEach(mod => {
         const cardElement = createModCard(mod);
-        modList.appendChild(cardElement);
+        document.getElementById("modList").appendChild(cardElement);
       });
     } else {
-      console.log('Modpacks anzeigen:', modpacks); // Debugging: Zeigt die Modpacks an
-      modSection.style.display = "none";
-      modpackSection.style.display = "block";
-      categoryTitle.textContent = "Modpacks";
-      modpackList.innerHTML = "";
-      modpackCount.textContent = `Verfügbare Modpacks (${modpacks.length})`;
+      document.getElementById("modSection").style.display = "none";
+      document.getElementById("modpackSection").style.display = "block";
+      document.getElementById("categoryTitle").textContent = "Modpacks";
+      document.getElementById("modpackList").innerHTML = "";
+      document.getElementById("modpackCount").textContent = `Verfügbare Modpacks (${modpacks.length})`;
 
       modpacks.forEach(modpack => {
         const cardElement = createModCard(modpack);
-        modpackList.appendChild(cardElement);
+        document.getElementById("modpackList").appendChild(cardElement);
       });
     }
   } catch (err) {
     console.error("Fehler beim Laden der Mods:", err);
-    modList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
-    modpackList.innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
+    document.getElementById("modList").innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
+    document.getElementById("modpackList").innerHTML = "<p style='color:#f44;'>Fehler beim Laden der Liste.</p>";
   }
 }
+
 
     loadMods();
 
