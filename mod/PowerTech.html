@@ -9,7 +9,7 @@
   <meta name="mod-name" content="PowerTech">
   <meta name="mod-version" content="1.1.2">
   <meta name="description" content="PowerTech bringt fortschrittliche Technologien, Maschinen und Energieerzeugung in NasumiCraft.  Die Mod ist gerade nicht in Entwicklung">
-  <meta name="license" content="MIT">
+  <meta name="license" content="NCR">
   <meta name="mod-image" content="../pageimages/powertech.png">
   <meta name="minecraft-version" content="1.20.1">
   <meta name="mod-loader" content="Forge">
@@ -225,18 +225,45 @@
   </div>
 
   <script>
-    const name = document.querySelector('meta[name="mod-name"]').content;
-    const version = document.querySelector('meta[name="mod-version"]').content;
-    const mcVersion = document.querySelector('meta[name="minecraft-version"]').content;
-    const loader = document.querySelector('meta[name="mod-loader"]').content;
-    const desc = document.querySelector('meta[name="description"]').content;
-    const license = document.querySelector('meta[name="license"]').content;
-    const image = document.querySelector('meta[name="mod-image"]').content;
+  const name = document.querySelector('meta[name="mod-name"]').content;
+  const modVersion = document.querySelector('meta[name="mod-version"]').content;
+  const desc = document.querySelector('meta[name="description"]').content;
+  const license = document.querySelector('meta[name="license"]').content;
+  const image = document.querySelector('meta[name="mod-image"]').content;
 
-    document.getElementById("modTitle").textContent = name;
-    document.getElementById("modDescription").textContent = desc;
-    document.getElementById("licenseText").textContent = "Lizenz: " + license;
-    document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
+  document.getElementById("modTitle").textContent = name;
+  document.getElementById("modDescription").textContent = desc;
+  document.getElementById("modImage").style.backgroundImage = `url('${image}')`;
+
+  // Lizenz-Text und Link dynamisch anpassen
+  const licenseTextElement = document.getElementById("licenseText");
+
+  switch (license) {
+    case 'NCR':
+      // Lizenz "NCR" anpassen
+      licenseTextElement.innerHTML = 'Lizenz: <a href="https://mc.nasumicraft.de/licenses/ncr.html" target="_blank" style="color: #ff6600; text-decoration: none;">NCR Lizenz</a>';
+      break;
+    case 'MIT':
+      // Lizenz "MIT" anpassen
+      licenseTextElement.innerHTML = 'Lizenz: <a href="https://opensource.org/licenses/MIT" target="_blank" style="color: #ff6600; text-decoration: none;">MIT Lizenz</a>';
+      break;
+    case 'NCRFD':
+      // Lizenz "NCRFD" anpassen
+      licenseTextElement.innerHTML = 'Lizenz: <a href="https://mc.nasumicraft.de/licenses/ncrfd.html" target="_blank" style="color: #ff6600; text-decoration: none;">NCRFD Lizenz</a>';
+      break;
+    case 'NCRFC':
+      // Lizenz "NCRFC" anpassen
+      licenseTextElement.innerHTML = 'Lizenz: <a href="https://mc.nasumicraft.de/licenses/ncrfc.html" target="_blank" style="color: #ff6600; text-decoration: none;">NCRFC Lizenz</a>';
+      break;
+    case 'NCRFMC':
+      // Lizenz "NCRFMC" anpassen
+      licenseTextElement.innerHTML = 'Lizenz: <a href="https://mc.nasumicraft.de/licenses/ncrfmc.html" target="_blank" style="color: #ff6600; text-decoration: none;">NCRFMC Lizenz</a>';
+      break;
+    default:
+      // Wenn keine der obigen Lizenzen vorhanden ist, wird der Lizenzname einfach als Text angezeigt
+      licenseTextElement.textContent = 'Lizenz: ' + license;
+      break;
+  }
 
     // Versionen laden
     const versionSelect = document.getElementById("versionSelect");
