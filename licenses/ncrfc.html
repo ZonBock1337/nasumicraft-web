@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NCRFC License – NasumiCraft</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 1rem; background: #ffffff; }
+    pre, code { background: #f0f0f0; padding: 0.5rem; border-radius: 4px; }
+    a { color: #1a73e8; }
+  </style>
+</head>
+<body>
+  <h1>NCRFC License (NasumiCraft Rights)</h1>
+  <div id="content">Loading license...</div>
+
+  <script>
+    fetch("markdown/NCRFC License.md")
+      .then(res => res.text())
+      .then(md => {
+        document.getElementById("content").innerHTML = marked.parse(md);
+      });
+  </script>
+</body>
+</html>
