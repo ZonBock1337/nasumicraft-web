@@ -235,7 +235,9 @@ async function loadMods() {
     const modpacks = [];
 
     for (const fileName of links) {
-      const rawUrl = `${baseUrl}${fileName}`;
+      const rawUrl = fileName.startsWith("http")
+  ? fileName
+  : baseUrl + fileName.replace(/^\.?\//, "");
       const publicUrl = rawUrl;
       const filename = fileName.replace(".html", "");
 
