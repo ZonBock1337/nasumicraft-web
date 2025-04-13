@@ -227,7 +227,7 @@ async function loadMods() {
 
     const res = await fetch(githubApiUrl);
     const files = await res.json();
-    console.log('Geladene Dateien von GitHub:', files); // Debugging
+    console.log('Geladene Dateien von denn NC Servern:', files); // Debugging
 
     const htmlFiles = files.filter(file => file.name.endsWith(".html"));
     console.log('Gefilterte HTML-Dateien:', htmlFiles);
