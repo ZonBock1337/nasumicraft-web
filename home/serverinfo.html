@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NasumiCraft Serverinfo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #121212;
+      width: 100%;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #ff6600;
+      margin: 0;
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .info-box {
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .info-item {
+      margin: 15px 0;
+    }
+
+    .info-item span {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+
+    .ip-box {
+      font-size: 18px;
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+
+    #serverStatus {
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #444;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      margin: 40px 0 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>NasumiCraft Server</h1>
+  </header>
+
+  <main>
+    <div class="info-box">
+      <div class="info-item">
+        <span>Server IP:</span>
+        <div class="ip-box">mc.nasumicraft.de</div>
+      </div>
+
+      <div class="info-item">
+        <span>Version:</span>
+        <div class="ip-box">1.20.4</div>
+      </div>
+
+      <div class="info-item">
+        <span>Serverstatus:</span>
+        <div id="serverStatus">Lade Status...</div>
+      </div>
+      
+            <div class="info-item">
+        <span>Warnung:</span>
+        <div class="ip-box">NasumiCraft ist momentan in ⚠️ Wartungsarbeiten und warscheinlich erst wieder um 02.00 Uhr wieder Online!</div>
+      </div>
+      
+    </div>
+    
+
+
+    <div class="info-box">
+      <h3>Beschreibung</h3>
+      <p>
+        Willkommen auf dem offiziellen NasumiCraft Minecraft-Server!  
+        Spiele mit Freunden, erkunde Modpacks oder baue dein eigenes Abenteuer.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 NasumiCraft. Made with Craft. | <a href="../home/impressum-nc.html" style="color: #777;">Impressum</a>
+  </footer>
+
+  <script>
+    async function fetchServerStatus() {
+      const serverIp = "mc.nasumicraft.de";
+
+      try {
+        const res = await fetch(`https://api.mcstatus.io/v2/status/java/${serverIp}`);
+        const data = await res.json();
+
+        const statusEl = document.getElementById("serverStatus");
+
+        if (data.online) {
+          const online = data.players.online;
+          const max = data.players.max;
+          const motd = data.motd.clean || "Online";
+
+          statusEl.innerHTML = `
+            ✅ <strong>Online</strong><br>
+            Spieler: <strong>${online}</strong> / ${max}<br>
+            <small>${motd}</small>
+          `;
+          statusEl.style.backgroundColor = "#2e8b57";
+        } else {
+          statusEl.innerHTML = "❌ <strong>Offline</strong>";
+          statusEl.style.backgroundColor = "#8b0000";
+        }
+      } catch (err) {
+        console.error("Fehler beim Abrufen:", err);
+        document.getElementById("serverStatus").innerText = "⚠️ Fehler beim Laden";
+        document.getElementById("serverStatus").style.backgroundColor = "#555";
+      }
+    }
+
+    fetchServerStatus();
+    setInterval(fetchServerStatus, 30000); // alle 30 Sekunden
+  </script>
+
+</body>
+</html>
