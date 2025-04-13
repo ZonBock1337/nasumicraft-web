@@ -1,6 +1,7 @@
 ![License: NCRFC](https://img.shields.io/badge/license-MHU-yellow)
 
 # URHEBERRECHT
+**Minecraft Helden Urheberrecht**
 
 ---
 
