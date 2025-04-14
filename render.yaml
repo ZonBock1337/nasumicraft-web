@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: plan-api
+    env: php
+    buildCommand: ""
+    startCommand: ""
+    plan: free
+    autoDeploy: true
+    rootDir: public
