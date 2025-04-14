@@ -1,5 +1,5 @@
 <?php
-$mysqli = new mysqli("193.135.10.237", "dbb6175733", "k43koorniqxk5w3fs8z03el50i7fqjux", "plan");
+$mysqli = new mysqli("193.135.10.237", "dbbd8fb1f1", "kam6d9r0rgsztc5ite8eadrdnxsommso", "plan");
 
 if ($mysqli->connect_error) {
     die("Verbindung fehlgeschlagen: " . $mysqli->connect_error);
