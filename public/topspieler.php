@@ -13,7 +13,6 @@ $sql = "
 ";
 
 $result = $mysqli->query($sql);
-
 $spieler = [];
 
 while($row = $result->fetch_assoc()) {
