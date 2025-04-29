@@ -170,8 +170,8 @@
       try {
         const category = document.getElementById("categorySelect").value;
         const baseUrl = category === "modpack"
-          ? "https://mc.masumicraft.de/modpack/"
-          : "https://mc.masumicraft.de/mod/";
+          ? "https://mc.nasumicraft.de/modpack/"
+          : "https://mc.nasumicraft.de/mod/";
         const fileListUrl = `${baseUrl}list.php`;
 
         const res = await fetch(fileListUrl);
