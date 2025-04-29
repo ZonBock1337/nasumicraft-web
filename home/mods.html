@@ -183,19 +183,8 @@
   <h3 id="modSectionTitle">Mods</h3>
   <div class="mod-count" id="modCount">Lade Mods...</div>
   <div class="mod-list" id="modList">
-  <!-- Statische Beispiel-Mod für bessere Indexierung -->
-  <div class="mod-card">
-    <div class="mod-image" style="background-image: url('https://via.placeholder.com/400x400?text=Mod');"></div>
-    <div class="mod-content">
-      <div class="mod-title">NC-ModList-API</div>
-      <div class="mod-version">Version: 1.0.0</div>
-      <a class="mod-link" href="https://mc.nasumicraft.de/api/nc-modlist-api.html" target="_blank">Mod-Seite öffnen</a>
-    </div>
+    <p style="color:#888;">Mods werden geladen...</p>
   </div>
-
-  <!-- Optionaler Ladehinweis -->
-  <p style="color:#888;">Mods werden geladen...</p>
-</div>
 </div>
 
 <div id="modpackSection" style="display:none;">
@@ -287,8 +276,6 @@ async function loadMods() {
       document.getElementById("modpackSection").style.display = "none";
       document.getElementById("categoryTitle").textContent = "Mods";
       document.getElementById("modList").innerHTML = "";
-      // Entferne statischen Beispiel-Mod
-      document.querySelectorAll(".mod-list .mod-card").forEach(card => card.remove());
       document.getElementById("modCount").textContent = `Verfügbare Mods (${mods.length})`;
 
       mods.forEach(mod => {
