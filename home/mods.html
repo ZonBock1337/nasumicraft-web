@@ -287,6 +287,8 @@ async function loadMods() {
       document.getElementById("modpackSection").style.display = "none";
       document.getElementById("categoryTitle").textContent = "Mods";
       document.getElementById("modList").innerHTML = "";
+      // Entferne statischen Beispiel-Mod
+      document.querySelectorAll(".mod-list .mod-card").forEach(card => card.remove());
       document.getElementById("modCount").textContent = `Verfügbare Mods (${mods.length})`;
 
       mods.forEach(mod => {
