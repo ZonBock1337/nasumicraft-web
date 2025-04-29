@@ -6,13 +6,13 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://mc.nasumicraft.de/home/modsloader</loc>
+    <loc>https://mc.nasumicraft.de/services/nc-status-service</loc>
     <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://mc.nasumicraft.de/home/serverstatus</loc>
+    <loc>https://mc.nasumicraft.de/licenses/</loc>
     <priority>0.6</priority>
-    <changefreq>daily</changefreq>
+    <changefreq>weekly</changefreq>
   </url>
 </urlset>
