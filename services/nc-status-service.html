@@ -1,133 +1,26 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>NCStatus</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f0f2f5;
-      padding: 40px;
-      color: #333;
-    }
-    .status-box {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .service {
-      margin-bottom: 25px;
-    }
-    .service-title {
-      font-weight: bold;
-      font-size: 1.1em;
-    }
-    .status {
-      margin-top: 5px;
-      padding: 8px 15px;
-      border-radius: 8px;
-      display: inline-block;
-      font-weight: bold;
-    }
-    .online {
-      background-color: #d4edda;
-      color: #155724;
-    }
-    .offline {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-    .unstable {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-  </style>
-</head>
-<body>
-  <div class="status-box">
-    <h1>NC Server Status</h1>
+<div id="status-container">Lade Status...</div>
 
-    <div class="service">
-      <div class="service-title">Cloudflare Berlin</div>
-      <div id="cloudflare-status" class="status">Wird geprüft...</div>
-    </div>
+<script>
+  fetch('https://mc.nasumicraft.de/services/api/nc-status-api')
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById('status-container');
+      container.innerHTML = html;
 
-    <div class="service">
-      <div class="service-title">NC Mod Service</div>
-      <div id="mod-status" class="status">Wird geprüft...</div>
-    </div>
-
-    <div class="service">
-      <div class="service-title">NC Modpack Service</div>
-      <div id="modpack-status" class="status">Wird geprüft...</div>
-    </div>
-  </div>
-
-  <script>
-    // Prüft ob URL erreichbar ist und wie schnell
-    async function checkService(url, elementId) {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000); // max 5s
-
-      const start = performance.now();
-      try {
-        const response = await fetch(url, { method: 'HEAD', signal: controller.signal });
-        const duration = performance.now() - start;
-        const el = document.getElementById(elementId);
-        if (response.ok) {
-          if (duration < 1500) {
-            el.textContent = 'Online';
-            el.className = 'status online';
-          } else {
-            el.textContent = 'Instabile Verbindung';
-            el.className = 'status unstable';
-          }
+      // Eingebettete Skripte aktivieren
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
         } else {
-          el.textContent = 'Offline';
-          el.className = 'status offline';
+          newScript.textContent = oldScript.textContent;
         }
-      } catch (err) {
-        const el = document.getElementById(elementId);
-        el.textContent = 'Offline';
-        el.className = 'status offline';
-      } finally {
-        clearTimeout(timeout);
-      }
-    }
-
-    async function checkCloudflareBerlin() {
-      try {
-        const res = await fetch('https://www.cloudflarestatus.com/api/v2/components.json');
-        const data = await res.json();
-        const berlin = data.components.find(c => c.name.includes('Berlin') || c.name.includes('(TXL)'));
-        const el = document.getElementById('cloudflare-status');
-        if (berlin && berlin.status === 'operational') {
-          el.textContent = 'Online';
-          el.className = 'status online';
-        } else if (berlin) {
-          el.textContent = berlin.status.charAt(0).toUpperCase() + berlin.status.slice(1);
-          el.className = 'status offline';
-        } else {
-          el.textContent = 'Unbekannt';
-          el.className = 'status offline';
-        }
-      } catch (err) {
-        const el = document.getElementById('cloudflare-status');
-        el.textContent = 'Fehler beim Abrufen';
-        el.className = 'status offline';
-      }
-    }
-
-    checkCloudflareBerlin();
-    checkService('https://mc.nasumicraft.de/mod', 'mod-status');
-    checkService('https://mc.nasumicraft.de/modpack', 'modpack-status');
-  </script>
-</body>
-</html>
+        document.body.appendChild(newScript);
+      });
+    })
+    .catch(() => {
+      document.getElementById('status-container').innerHTML =
+        '<div class="status unstable" style="background-color: #fff3cd; color: #856404; padding: 0.6em 1em; border-radius: 6px; font-weight: bold;">Verbindung unterbrochen, Grund: Keine Verbindung zum Server</div>';
+    });
+</script>
