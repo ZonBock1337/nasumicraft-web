@@ -222,7 +222,7 @@ async function loadMods() {
     console.log('Kategorie ausgewählt:', category);
 
     // URL je nach Kategorie anpassen
-    const githubApiUrl = ${githubApiUrlBase}${category}?ref=${branch};
+    const githubApiUrl = `${githubApiUrlBase}${category}?ref=${branch}`;
     console.log('Abruf URL:', githubApiUrl); // Debugging: Zeigt die URL, die abgerufen wird.
 
     const res = await fetch(githubApiUrl);
@@ -239,7 +239,7 @@ async function loadMods() {
     for (const file of htmlFiles) {
       const baseUrl = category === "modpack" ? "https://mc.nasumicraft.de/modpack/" : "https://mc.nasumicraft.de/mod/";
 
-      const rawUrl = ${baseUrl}${file.name};
+      const rawUrl = `${baseUrl}${file.name}`;
       const publicUrl = rawUrl;
 
       console.log('Lade Datei von URL:', rawUrl);
@@ -276,7 +276,7 @@ async function loadMods() {
       document.getElementById("modpackSection").style.display = "none";
       document.getElementById("categoryTitle").textContent = "Mods";
       document.getElementById("modList").innerHTML = "";
-      document.getElementById("modCount").textContent = Verfügbare Mods (${mods.length});
+      document.getElementById("modCount").textContent = `Verfügbare Mods (${mods.length})`;
 
       mods.forEach(mod => {
         const cardElement = createModCard(mod);
@@ -311,7 +311,7 @@ async function loadMods() {
       // Füge das Bild hinzu
       const modImage = document.createElement("div");
       modImage.className = "mod-image";
-      modImage.style.backgroundImage = url('${mod.image}');
+      modImage.style.backgroundImage = `url('${mod.image}')`;
       card.appendChild(modImage);
     
       // Füge den Inhalt der Karte hinzu
@@ -325,7 +325,7 @@ async function loadMods() {
     
       const modVersion = document.createElement("div");
       modVersion.className = "mod-version";
-      modVersion.textContent = Version: ${mod.version};
+      modVersion.textContent = `Version: ${mod.version}`;
       modContent.appendChild(modVersion);
     
       const modLink = document.createElement("a");
