@@ -33,7 +33,7 @@ const commands = [
 
   new SlashCommandBuilder()
     .setName('hilfe')
-    .setDescription('Zeigt eine Übersicht der Befehle')
+    .setDescription('Zeigt eine Übersicht der Befehle'),
 
   new SlashCommandBuilder()
   .setName('blocklinks')
