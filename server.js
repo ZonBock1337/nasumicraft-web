@@ -118,9 +118,9 @@ client.on(Events.InteractionCreate, async interaction => {
 - \`/hilfe\` – Zeigt diese Hilfe`
       });
     }
-  }
 
-  if (commandName === 'blocklinks') {
+    // Blockiert Links
+    if (commandName === 'blocklinks') {
   const status = interaction.options.getBoolean('status');
   blockLinksEnabled = status;
 
@@ -128,6 +128,7 @@ client.on(Events.InteractionCreate, async interaction => {
     content: `🔗 Link-Blockierung ist jetzt **${status ? 'aktiviert' : 'deaktiviert'}**.`,
     ephemeral: true
   });
+ }
 }
 
   // Modal-Eingabe verarbeiten
