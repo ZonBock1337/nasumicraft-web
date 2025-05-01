@@ -1,49 +1,86 @@
 const express = require('express');
-const { Client, GatewayIntentBits } = require('discord.js');
 const fetch = require('node-fetch');
-require('dotenv').config();
-
 const app = express();
-const port = process.env.PORT || 3000;
-
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers
-  ]
-});
-
-client.login(process.env.TOKEN);
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(express.static('public'));
 
-// API-Endpunkt, der die Belohnung beansprucht und die Rolle zuweist
-app.post('/api/claim-reward', async (req, res) => {
-  try {
-    const discordUserId = req.body.userId; // Der Benutzer-ID, der die Rolle erhalten soll
+// Discord-API-Token und andere Daten
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.SECRET_TOKEN;
+const BOT_TOKEN = process.env.TOKEN;
+const REDIRECT_URI = 'https://mc.nasumicraft.de/secrets/reward';
+const DISCORD_API_URL = 'https://discord.com/api/v10';
 
-    const guild = await client.guilds.fetch(process.env.GUILD_ID); // Holen des Servers
-    const member = await guild.members.fetch(discordUserId);
+app.post('/getToken', async (req, res) => {
+    const { code } = req.body;
 
-    if (!member) {
-      return res.status(400).json({ success: false, message: 'User not found' });
+    const body = new URLSearchParams({
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        code: code,
+        grant_type: 'authorization_code',
+        redirect_uri: REDIRECT_URI,
+        scope: 'identify',
+    });
+
+    try {
+        const response = await fetch(`${DISCORD_API_URL}/oauth2/token`, {
+            method: 'POST',
+            body,
+        });
+        const data = await response.json();
+        
+        if (data.access_token) {
+            return res.json({ access_token: data.access_token });
+        } else {
+            return res.status(400).json({ error: 'Failed to get access token' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
     }
-
-    // Rolle hinzufügen
-    const role = guild.roles.cache.find(role => role.name === "Achievements Hunter");
-    if (!role) {
-      return res.status(400).json({ success: false, message: 'Role not found' });
-    }
-
-    await member.roles.add(role);
-
-    res.json({ success: true });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
-  }
 });
 
-app.listen(port, () => {
-  console.log(`Server läuft auf Port ${port}`);
+app.post('/assignRole', async (req, res) => {
+    const token = req.headers['authorization'].split(' ')[1];
+    
+    if (!token) {
+        return res.status(400).json({ error: 'Token missing' });
+    }
+
+    try {
+        // Discord API Aufruf um den Benutzernamen zu bekommen
+        const userData = await fetch(`${DISCORD_API_URL}/users/@me`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }).then(response => response.json());
+
+        const guildID = '1269311377105748162'; // Deine Server-ID
+        const roleID = '1367584279583916052';  // Deine Role-ID
+        const userID = userData.id;
+
+        const addRoleResponse = await fetch(`${DISCORD_API_URL}/guilds/${guildID}/members/${userID}/roles/${roleID}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bot ${BOT_TOKEN}`,
+            }
+        });
+
+        if (addRoleResponse.ok) {
+            return res.json({ success: true });
+        } else {
+            return res.status(400).json({ success: false, error: 'Failed to assign role' });
+        }
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Failed to assign role' });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
