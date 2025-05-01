@@ -11,7 +11,7 @@ app.use(express.static('public'));
 // Discord-API-Token und andere Daten
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.SECRET_TOKEN;
-const BOT_TOKEN = process.env.TOKEN;
+const BOT_TOKEN = process.env.BOT_TOKEN;
 const REDIRECT_URI = 'https://mc.nasumicraft.de/secrets/reward';
 const DISCORD_API_URL = 'https://discord.com/api/v10';
 
