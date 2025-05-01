@@ -1,5 +1,7 @@
-const express = require('express');
-import fetch from 'node-fetch';
+// Verwende 'import' anstelle von 'require'
+import express from 'express';
+import fetch from 'node-fetch'; // Hier auch 'import' verwenden
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
