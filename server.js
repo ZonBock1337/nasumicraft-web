@@ -1,4 +1,7 @@
 require('dotenv').config();
+
+let blockLinksEnabled = false; // Standard: Links blockieren aktiviert
+
 const {
   Client,
   GatewayIntentBits,
@@ -31,6 +34,16 @@ const commands = [
   new SlashCommandBuilder()
     .setName('hilfe')
     .setDescription('Zeigt eine Übersicht der Befehle')
+
+  new SlashCommandBuilder()
+  .setName('blocklinks')
+  .setDescription('Aktiviert oder deaktiviert das Blockieren von Links')
+  .addBooleanOption(option =>
+    option.setName('status')
+      .setDescription('true = blockieren, false = erlauben')
+      .setRequired(true)
+  )
+  .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator),
 ].map(cmd => cmd.toJSON());
 
 // Wenn Bot bereit ist
@@ -107,10 +120,37 @@ client.on(Events.InteractionCreate, async interaction => {
     }
   }
 
+  if (commandName === 'blocklinks') {
+  const status = interaction.options.getBoolean('status');
+  blockLinksEnabled = status;
+
+  await interaction.reply({
+    content: `🔗 Link-Blockierung ist jetzt **${status ? 'aktiviert' : 'deaktiviert'}**.`,
+    ephemeral: true
+  });
+}
+
   // Modal-Eingabe verarbeiten
   if (interaction.isModalSubmit() && interaction.customId === 'messageModal') {
     const nachricht = interaction.fields.getTextInputValue('nachricht');
     await interaction.reply({ content: nachricht });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return; // Bot ignorieren
+  if (!blockLinksEnabled) return;
+
+  const linkRegex = /(https?:\/\/[^\s]+)/g;
+  if (linkRegex.test(message.content)) {
+    try {
+      await message.delete();
+      await message.channel.send({
+        content: `❌ ${message.author} Bitte sende keine Links!`
+      });
+    } catch (err) {
+      console.error('Fehler beim Löschen der Nachricht:', err);
+    }
   }
 });
 
