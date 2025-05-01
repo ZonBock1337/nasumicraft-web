@@ -1,85 +1,64 @@
-import express from 'express';
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
+require('dotenv').config();
+const {
+  Client,
+  GatewayIntentBits,
+  SlashCommandBuilder,
+  Events,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+  REST,
+  Routes
+} = require('discord.js');
 
-dotenv.config();
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const commands = [
+  new SlashCommandBuilder()
+    .setName('message')
+    .setDescription('Schreibe eine Nachricht über ein Formular')
+].map(command => command.toJSON());
 
-app.use(express.json());
-app.use(express.static('public'));
+client.once(Events.ClientReady, async () => {
+  console.log(`Eingeloggt als ${client.user.tag}`);
 
-// Discord-API-Token und andere Daten
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const REDIRECT_URI = 'https://mc.nasumicraft.de/secrets/reward';
-const DISCORD_API_URL = 'https://discord.com/api/v10';
-
-app.get('/secrets/reward', async (req, res) => {
-  const { code } = req.query;
-
-  if (!code) {
-    return res.status(400).send('Kein Code erhalten');
-  }
-
+  const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
   try {
-    // 1. Holen wir uns das Access-Token mit dem erhaltenen Code
-    const tokenResponse = await fetch(`${DISCORD_API_URL}/oauth2/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code: code,
-        grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI,
-        scope: 'identify',
-      }),
-    });
-
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
-
-    if (!accessToken) {
-      return res.status(400).send('Fehler beim Abrufen des Tokens');
-    }
-
-    // 2. Holen wir uns die Benutzerinformationen mit dem Access-Token
-    const userResponse = await fetch(`${DISCORD_API_URL}/users/@me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const userData = await userResponse.json();
-
-    // 3. Rolle zuweisen
-    const guildID = '1269311377105748162'; // Deine Server-ID
-    const roleID = '1367584279583916052';   // Deine Role-ID
-    const userID = userData.id;
-
-    const roleResponse = await fetch(`${DISCORD_API_URL}/guilds/${guildID}/members/${userID}/roles/${roleID}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bot ${BOT_TOKEN}`,
-      },
-    });
-
-    if (roleResponse.ok) {
-      return res.send('Rolle erfolgreich zugewiesen!');
-    } else {
-      return res.status(400).send('Fehler beim Zuweisen der Rolle');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).send('Serverfehler');
+    await rest.put(
+      Routes.applicationCommands(process.env.CLIENT_ID),
+      { body: commands }
+    );
+    console.log('Slash-Commands registriert.');
+  } catch (err) {
+    console.error('Fehler beim Registrieren:', err);
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server läuft auf Port ${PORT}`);
+client.on(Events.InteractionCreate, async interaction => {
+  if (interaction.isChatInputCommand()) {
+    if (interaction.commandName === 'message') {
+      const modal = new ModalBuilder()
+        .setCustomId('messageModal')
+        .setTitle('Nachricht senden');
+
+      const input = new TextInputBuilder()
+        .setCustomId('nachricht')
+        .setLabel('Deine Nachricht')
+        .setStyle(TextInputStyle.Paragraph)
+        .setRequired(true)
+        .setPlaceholder('Mehrzeilige Nachricht...');
+
+      const row = new ActionRowBuilder().addComponents(input);
+      modal.addComponents(row);
+      await interaction.showModal(modal);
+    }
+  } else if (interaction.isModalSubmit()) {
+    if (interaction.customId === 'messageModal') {
+      const message = interaction.fields.getTextInputValue('nachricht');
+      await interaction.reply({ content: message });
+    }
+  }
 });
+
+client.login(process.env.BOT_TOKEN);
