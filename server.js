@@ -1,26 +1,49 @@
-const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
-const app = express();
+const { Client, GatewayIntentBits } = require('discord.js');
+const fetch = require('node-fetch');
+require('dotenv').config();
 
-const TOKEN = process.env.TOKEN;
+const app = express();
+const port = process.env.PORT || 3000;
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
+    GatewayIntentBits.GuildMembers
   ]
 });
 
-client.once('ready', () => {
-  console.log(`Bot ist online als ${client.user.tag}`);
+client.login(process.env.TOKEN);
+
+app.use(express.json());
+
+// API-Endpunkt, der die Belohnung beansprucht und die Rolle zuweist
+app.post('/api/claim-reward', async (req, res) => {
+  try {
+    const discordUserId = req.body.userId; // Der Benutzer-ID, der die Rolle erhalten soll
+
+    const guild = await client.guilds.fetch(process.env.GUILD_ID); // Holen des Servers
+    const member = await guild.members.fetch(discordUserId);
+
+    if (!member) {
+      return res.status(400).json({ success: false, message: 'User not found' });
+    }
+
+    // Rolle hinzufügen
+    const role = guild.roles.cache.find(role => role.name === "Achievements Hunter");
+    if (!role) {
+      return res.status(400).json({ success: false, message: 'Role not found' });
+    }
+
+    await member.roles.add(role);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 });
 
-client.login(TOKEN);
-
-// Ping-Seite für UptimeRobot
-app.get("/", (req, res) => {
-  res.send("Bot läuft!");
+app.listen(port, () => {
+  console.log(`Server läuft auf Port ${port}`);
 });
-
-app.listen(3000, () => console.log("Webserver läuft"));
