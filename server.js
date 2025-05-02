@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const port = process.env.PORT || 4000
-let blockLinksEnabled = false; // Standard: Links blockieren aktiviert
+let blockLinksEnabled = true; // Standard: Links blockieren aktiviert
 
 const {
   Client,
