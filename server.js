@@ -116,6 +116,7 @@ client.on(Events.InteractionCreate, async interaction => {
         content: `**Verfügbare Befehle:**\n
 - \`/message\` – Nachricht senden (nur Admins)
 - \`/ping\` – Zeigt die Latenz
+- \`/blocklinks\` - Blockiert Links die gesendet werden (true = aktiviert / false = deaktiviert)
 - \`/hilfe\` – Zeigt diese Hilfe`
       });
     }
